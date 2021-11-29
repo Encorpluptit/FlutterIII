@@ -5,13 +5,11 @@ abstract class RegisterState {
 }
 
 class RegisterLoading extends RegisterState {
-  RegisterLoading();
+  const RegisterLoading();
 }
 
 class RegisterLoadedSuccess extends RegisterState {
-  final List<dynamic> movies;
-
-  const RegisterLoadedSuccess([this.movies = const []]);
+  const RegisterLoadedSuccess();
 }
 
 class RegisterLoadedFailure extends RegisterState {
@@ -20,8 +18,6 @@ class RegisterLoadedFailure extends RegisterState {
   RegisterLoadedFailure(this.cause);
 }
 
-class RegisterClickOnDetailsSuccess extends RegisterState {
-  final String id;
-
-  const RegisterClickOnDetailsSuccess(this.id);
+class RegisterOnPage extends RegisterState {
+  const RegisterOnPage();
 }

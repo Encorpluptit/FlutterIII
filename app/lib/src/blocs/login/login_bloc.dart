@@ -8,27 +8,19 @@ part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc() : super(LoginLoading());
+  LoginBloc() : super(const LoginOnPage());
 
-  @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    if (event is LoginLoadEvent || event is LoginRefreshEvent) {
-      yield* (await _LoginLoad());
-    }
-    if (event is LoginClickOnDetails) {
-      yield* (await _LoginClickOnDetails(event));
+    if (event is LoginLoadEvent) {
+      yield* (_loginLoad());
     }
   }
 
-  Stream<LoginState> _LoginLoad() async* {
+  Stream<LoginState> _loginLoad() async* {
     try {
-      yield LoginLoadedSuccess({} as dynamic);
+      yield const LoginLoadedSuccess();
     } on Exception catch (error) {
       yield LoginLoadedFailure(error.toString());
     }
-  }
-
-  Stream<LoginState> _LoginClickOnDetails(LoginClickOnDetails event) async* {
-    yield (LoginClickOnDetailsSuccess(event.id));
   }
 }

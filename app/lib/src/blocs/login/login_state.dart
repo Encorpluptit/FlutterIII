@@ -5,13 +5,11 @@ abstract class LoginState {
 }
 
 class LoginLoading extends LoginState {
-  LoginLoading();
+  const LoginLoading();
 }
 
 class LoginLoadedSuccess extends LoginState {
-  final List<dynamic> movies;
-
-  const LoginLoadedSuccess([this.movies = const []]);
+  const LoginLoadedSuccess();
 }
 
 class LoginLoadedFailure extends LoginState {
@@ -20,8 +18,6 @@ class LoginLoadedFailure extends LoginState {
   LoginLoadedFailure(this.cause);
 }
 
-class LoginClickOnDetailsSuccess extends LoginState {
-  final String id;
-
-  const LoginClickOnDetailsSuccess(this.id);
+class LoginOnPage extends LoginState {
+  const LoginOnPage();
 }

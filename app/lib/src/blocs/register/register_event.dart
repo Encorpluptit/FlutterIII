@@ -6,11 +6,3 @@ abstract class RegisterEvent {
 }
 
 class RegisterLoadEvent extends RegisterEvent {}
-
-class RegisterRefreshEvent extends RegisterEvent {}
-
-class RegisterClickOnDetails extends RegisterEvent {
-  final String id;
-
-  const RegisterClickOnDetails(this.id);
-}

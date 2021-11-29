@@ -8,28 +8,19 @@ part 'register_event.dart';
 part 'register_state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  RegisterBloc() : super(RegisterLoading());
+  RegisterBloc() : super(const RegisterLoading());
 
-  @override
   Stream<RegisterState> mapEventToState(RegisterEvent event) async* {
-    if (event is RegisterLoadEvent || event is RegisterRefreshEvent) {
-      yield* (await _RegisterLoad());
-    }
-    if (event is RegisterClickOnDetails) {
-      yield* (await _RegisterClickOnDetails(event));
+    if (event is RegisterLoadEvent) {
+      yield* (_registerLoad());
     }
   }
 
-  Stream<RegisterState> _RegisterLoad() async* {
+  Stream<RegisterState> _registerLoad() async* {
     try {
-      yield RegisterLoadedSuccess({} as dynamic);
+      yield const RegisterLoadedSuccess();
     } on Exception catch (error) {
       yield RegisterLoadedFailure(error.toString());
     }
-  }
-
-  Stream<RegisterState> _RegisterClickOnDetails(
-      RegisterClickOnDetails event) async* {
-    yield (RegisterClickOnDetailsSuccess(event.id));
   }
 }

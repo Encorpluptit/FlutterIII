@@ -11,7 +11,7 @@ import * as admin from "firebase-admin";
 
 admin.initializeApp();
 
-exports.getAllUsers = functions.region("europe-west2").https.onRequest((req, res) => {
+exports.getAllUsers = functions.region("europe-west2").https.onCall((data, context) => {
     const allUsers: any[] = [];
     return admin.auth().listUsers()
         .then(function (listUsersResult) {
@@ -19,10 +19,10 @@ exports.getAllUsers = functions.region("europe-west2").https.onRequest((req, res
                 const userData = userRecord.toJSON();
                 allUsers.push(userData);
             });
-            res.status(200).send(JSON.stringify(allUsers));
+            return (JSON.stringify(allUsers));
         })
         .catch(function (error) {
             console.log("Error listing users:", error);
-            res.status(500).send(error);
+            throw new functions.https.HttpsError("unknown", error.message, error);
         });
 });

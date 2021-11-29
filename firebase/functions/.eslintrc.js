@@ -31,5 +31,8 @@ module.exports = {
         "@typescript-eslint/no-explicit-any": "off",
         "space-before-function-paren": "off",
         "max-len": "off",
+        "object-curly-spacing": "off",
+        "@typescript-eslint/no-empty-function": "off",
+        "@typescript-eslint/no-unused-vars": "off",
     },
 };

@@ -17,8 +17,6 @@ class _HomeScreen extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Text("hello")
-    );
+    return const Scaffold(body: Text("hello"));
   }
 }

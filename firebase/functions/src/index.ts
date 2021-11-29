@@ -11,12 +11,12 @@ import * as admin from "firebase-admin";
 
 admin.initializeApp();
 
-exports.getAllUsers = functions.https.onRequest((req, res) => {
-    var allUsers: any[] = [];
+exports.getAllUsers = functions.region("europe-west2").https.onRequest((req, res) => {
+    const allUsers: any[] = [];
     return admin.auth().listUsers()
         .then(function (listUsersResult) {
             listUsersResult.users.forEach(function (userRecord) {
-                var userData = userRecord.toJSON();
+                const userData = userRecord.toJSON();
                 allUsers.push(userData);
             });
             res.status(200).send(JSON.stringify(allUsers));

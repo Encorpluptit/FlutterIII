@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:timetracking/src/ui/themes/themes.dart';
+import 'package:timetracking/src/ui/widgets/big_button.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -8,6 +10,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
   bool passwordVisible = false;
   void togglePassword() {
     setState(() {
@@ -28,16 +32,13 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     'Time Tracker',
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black),
+                    style: heading2.copyWith(color: black),
                   ),
-                  SizedBox(
-                    height: 75,
+                  const SizedBox(
+                    height: 10,
                   ),
                 ],
               ),
@@ -49,17 +50,15 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                        color: const Color(0xfff1f1f5),
+                        color: lightGrey,
                         borderRadius: BorderRadius.circular(14.0),
                       ),
                       child: TextFormField(
-                        decoration: const InputDecoration(
-                          hintText: 'Email',
-                          hintStyle: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff94959b)),
-                          border: OutlineInputBorder(
+                        controller: usernameController,
+                        decoration: InputDecoration(
+                          hintText: 'Username',
+                          hintStyle: heading6.copyWith(color: grey),
+                          border: const OutlineInputBorder(
                             borderSide: BorderSide.none,
                           ),
                         ),
@@ -70,19 +69,16 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        color: const Color(0xfff1f1f5),
+                        color: lightGrey,
                         borderRadius: BorderRadius.circular(14.0),
                       ),
                       child: TextFormField(
                         obscureText: !passwordVisible,
                         decoration: InputDecoration(
                           hintText: 'Password',
-                          hintStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xff94959b)),
+                          hintStyle: heading6.copyWith(color: grey),
                           suffixIcon: IconButton(
-                            color: const Color(0xff94959b),
+                            color: grey,
                             splashRadius: 1,
                             icon: Icon(passwordVisible
                                 ? Icons.visibility_outlined
@@ -104,47 +100,25 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 32,
               ),
-              Container(
-                height: 56,
-                decoration: BoxDecoration(
-                  color: const Color(0xff2972ff),
-                  borderRadius: BorderRadius.circular(14.0),
-                ),
-                child: InkWell(
-                  onTap: () {},
-                  borderRadius: BorderRadius.circular(14.0),
-                  child: const Center(
-                    child: Text(
-                      "Login",
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
+              BigButton(
+                  buttonColor: blue,
+                  textValue: "Login",
+                  textColor: Colors.white),
               const SizedBox(
                 height: 50,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     "Don't have an account? ",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: Color(0xff94959b)),
+                    style: regular16pt.copyWith(color: grey),
                   ),
                   GestureDetector(
                     onTap: () {},
-                    child: const Text(
+                    child: Text(
                       'Register',
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff2972ff)),
+                      style: regular16pt.copyWith(color: blue),
                     ),
                   ),
                 ],

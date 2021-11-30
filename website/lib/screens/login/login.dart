@@ -1,29 +1,57 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:website/screens/home/home_screen.dart';
 import 'package:website/utils/color_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:website/utils/shared_preferences.dart';
+import 'package:website/utils/global.dart' as global;
 
-Future<bool> _login(email, password) async {
+class Response {
+  bool _status;
+  String _message;
+
+  Response(this._status, this._message);
+
+  String get message => _message;
+  bool get status => _status;
+}
+
+Future<Response> _login(email, password) async {
   try {
     UserCredential userCredential = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
+
+    if (userCredential.user != null) {
+      final query = FirebaseFirestore.instanceFor(app: global.app)
+          .collection("users")
+          .doc(userCredential.user!.uid);
+      final result = await query.get();
+      if (result.data()!["role"] != "Admin") {
+        return (Response(false, "You're not an administrator"));
+      }
+    }
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {
-      print('No user found for that email.');
+      return (Response(false, "No user found that email"));
     } else if (e.code == 'wrong-password') {
-      print('Wrong password provided for that user.');
+      return (Response(false, "Wrong password provided"));
+    } else if (e.code == 'invalid-email') {
+      return (Response(false, "Email is not well formatted"));
+    } else {
+      return (Response(false, "Unknown error: " + e.code.toString()));
     }
-    return (false);
+  } catch (e) {
+    return (Response(false, "You're not an administrator"));
   }
+
   final auth = await MySharedPreferences()
       .set("AUTH", FirebaseAuth.instance.currentUser!.uid);
-  return (true);
+  return (Response(false, "Success"));
 }
 
 class Login extends StatefulWidget {
-  Login({Key? key, required this.title}) : super(key: key);
-  final String title;
+  Login({Key? key}) : super(key: key);
+
   @override
   _LoginState createState() => _LoginState();
 }
@@ -100,7 +128,7 @@ class _LoginState extends State<Login> {
                           _login(email_controller.text,
                                   password_controller.text)
                               .then((value) => {
-                                    if (value == true)
+                                    if (value.status == true)
                                       {
                                         Navigator.push(
                                           context,
@@ -108,6 +136,13 @@ class _LoginState extends State<Login> {
                                               builder: (context) =>
                                                   HomeScreen()),
                                         )
+                                      }
+                                    else
+                                      {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                                backgroundColor: Colors.red,
+                                                content: Text(value.message)))
                                       }
                                   })
                         },

@@ -10,4 +10,9 @@ class MySharedPreferences {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(key);
   }
+
+  unset(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.remove(key);
+  }
 }

@@ -70,12 +70,8 @@ class _AppState extends State<App> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
-              title: 'Epicture',
-              home: (snapshot.data == true
-                  ? HomeScreen()
-                  : Login(
-                      title: 'aze',
-                    )));
+              title: 'TimeTracking',
+              home: (snapshot.data == true ? HomeScreen() : Login()));
         } else {
           return Center(child: CircularProgressIndicator());
         }

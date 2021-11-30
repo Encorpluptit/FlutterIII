@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:website/screens/login/login.dart';
 import 'package:website/screens/users/users.dart';
 import 'package:website/utils/color_constants.dart';
+import 'package:website/utils/shared_preferences.dart';
 
 class NavigationRouteInterface {
   final Icon icon;
@@ -43,12 +46,15 @@ class HomeScreenState extends State<HomeScreen>
     super.dispose();
   }
 
+  Future<void> logout() async {
+    await FirebaseAuth.instance.signOut();
+    await MySharedPreferences().unset("AUTH");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading:
-            MediaQuery.of(context).size.width < 1300 ? true : false,
         title: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
@@ -69,7 +75,15 @@ class HomeScreenState extends State<HomeScreen>
               padding: EdgeInsets.all(0),
               icon: Icon(Icons.exit_to_app),
               onPressed: () {
-                Navigator.pop(context);
+                logout().then((value) => {
+                      Navigator.pushAndRemoveUntil<dynamic>(
+                        context,
+                        MaterialPageRoute<dynamic>(
+                          builder: (BuildContext context) => Login(),
+                        ),
+                        (route) => false,
+                      )
+                    });
               },
             ),
           ),

@@ -1,12 +1,24 @@
-import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:website/screens/home/home_screen.dart';
 import 'package:website/screens/login/login.dart';
+import 'package:website/utils/global.dart' as global;
+import 'package:website/utils/shared_preferences.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(App());
+}
+
+Future<bool> _loadCredidendials() async {
+  final auth = await MySharedPreferences().get("AUTH");
+
+  if (auth == null) {
+    return (false);
+  }
+
+  return (true);
 }
 
 class App extends StatefulWidget {
@@ -22,7 +34,8 @@ class _AppState extends State<App> {
   void initializeFlutterFire() async {
     try {
       // Wait for Firebase to initialize and set `_initialized` state to true
-      await Firebase.initializeApp();
+      global.app = await Firebase.initializeApp();
+      global.auth = await FirebaseAuth.instanceFor(app: global.app);
       setState(() {
         _initialized = true;
       });
@@ -52,16 +65,28 @@ class _AppState extends State<App> {
       return CircularProgressIndicator();
     }
 
-    Map<String, WidgetBuilder> routes = {
-      '/': (BuildContext context) => Login(title: "None"),
-      '/home': (BuildContext context) => HomeScreen(),
-    };
+    return FutureBuilder(
+      future: _loadCredidendials(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return MaterialApp(
+              title: 'Epicture',
+              home: (snapshot.data == true
+                  ? HomeScreen()
+                  : Login(
+                      title: 'aze',
+                    )));
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
+    );
+
     return MaterialApp(
       initialRoute: '/',
-      routes: routes,
       theme: ThemeData(fontFamily: 'HelveticaNeue'),
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'TimeTracking',
     );
   }
 }

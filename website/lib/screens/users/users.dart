@@ -1,7 +1,8 @@
 import 'dart:convert';
-
-import 'package:cloud_functions/cloud_functions.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:website/utils/global.dart' as global;
 
 class User {
   String _uuid = "";
@@ -36,17 +37,16 @@ class UsersListPage extends StatefulWidget {
 
 class _FormMaterialState extends State<UsersListPage> {
   Future<List<User>> _getUsers() async {
-    HttpsCallable callable =
-        await FirebaseFunctions.instanceFor(region: 'europe-west2')
-            .httpsCallable('getAllUsers');
-    final results = await callable.call();
-    final res = jsonDecode(results.data);
+    print(FirebaseAuth.instance.currentUser?.uid);
+    final users =
+        FirebaseFirestore.instanceFor(app: global.app).collection("users");
+    final query = await users.get().catchError((error) => print(error));
+    final allData = query.docs.map((doc) => doc.data()).toList();
 
     List<User> _list = [];
 
-    for (var i = 0; i != res.length; i++) {
-      print(res[i]);
-      _list.add(User.fromJSON(res[i]));
+    for (var i = 0; i != allData.length; i++) {
+      _list.add(User.fromJSON(allData[i]));
     }
     return (_list);
   }
@@ -76,22 +76,6 @@ class _FormMaterialState extends State<UsersListPage> {
   }
 }
 
-class _Row {
-  _Row(
-    this.valueA,
-    this.valueB,
-    this.valueC,
-    this.valueD,
-  );
-
-  final String valueA;
-  final String valueB;
-  final String valueC;
-  final int valueD;
-
-  bool selected = false;
-}
-
 class _DataSource extends DataTableSource {
   _DataSource(list, this.context) {
     _rows = list;
@@ -103,9 +87,7 @@ class _DataSource extends DataTableSource {
   int _selectedCount = 0;
 
   @override
-  DataRow? getRow(int index) {
-    assert(index >= 0);
-    if (index >= _rows.length) return null;
+  DataRow getRow(int index) {
     final row = _rows[index];
     return DataRow.byIndex(
       index: index,

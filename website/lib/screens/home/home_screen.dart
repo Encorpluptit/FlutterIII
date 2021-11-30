@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:website/screens/users/users.dart';
 import 'package:website/utils/color_constants.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 
 class NavigationRouteInterface {
   final Icon icon;
@@ -11,7 +10,7 @@ class NavigationRouteInterface {
 }
 
 const List<NavigationRouteInterface> navigationRoutes = [
-  NavigationRouteInterface(Icon(Icons.home), "Home", UsersListPage()),
+  NavigationRouteInterface(Icon(Icons.home), "Users", UsersListPage()),
   NavigationRouteInterface(Icon(Icons.home), "Home 2", UsersListPage()),
 ];
 

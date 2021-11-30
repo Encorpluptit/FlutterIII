@@ -1,6 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:website/screens/home/home_screen.dart';
 import 'package:website/utils/color_constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:website/utils/shared_preferences.dart';
+
+Future<bool> _login() async {
+  try {
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+            email: "acazalet@protonmail.com", password: "azeaze");
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'user-not-found') {
+      print('No user found for that email.');
+    } else if (e.code == 'wrong-password') {
+      print('Wrong password provided for that user.');
+    }
+    return (false);
+  }
+  final auth = await MySharedPreferences()
+      .set("AUTH", FirebaseAuth.instance.currentUser!.uid);
+  return (true);
+}
 
 class Login extends StatefulWidget {
   Login({Key? key, required this.title}) : super(key: key);
@@ -10,7 +30,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  bool isChecked = false;
   @override
   void initState() {
     super.initState();
@@ -40,11 +59,16 @@ class _LoginState extends State<Login> {
     final loginButton = Container(
       child: TextButton(
         style: TextButton.styleFrom(primary: Colors.blue),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
-          );
+        onPressed: () => {
+          _login().then((value) => {
+                if (value == true)
+                  {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                    )
+                  }
+              })
         },
         child: Text('Log In',
             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),

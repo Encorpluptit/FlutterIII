@@ -18,8 +18,6 @@ class User {
   User.fromJSON(Map<String, dynamic> result) {
     _uuid = result['uid'];
     _email = result['email'];
-    _email_verified = result['emailVerified'] as bool;
-    _creation_date = result['metadata']['creationTime'];
   }
 
   String get uuid => _uuid;
@@ -37,7 +35,6 @@ class UsersListPage extends StatefulWidget {
 
 class _FormMaterialState extends State<UsersListPage> {
   Future<List<User>> _getUsers() async {
-    print(FirebaseAuth.instance.currentUser?.uid);
     final users =
         FirebaseFirestore.instanceFor(app: global.app).collection("users");
     final query = await users.get().catchError((error) => print(error));

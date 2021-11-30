@@ -4,11 +4,10 @@ import 'package:website/utils/color_constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:website/utils/shared_preferences.dart';
 
-Future<bool> _login() async {
+Future<bool> _login(email, password) async {
   try {
     UserCredential userCredential = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(
-            email: "acazalet@protonmail.com", password: "azeaze");
+        .signInWithEmailAndPassword(email: email, password: password);
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {
       print('No user found for that email.');
@@ -30,6 +29,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final email_controller = TextEditingController();
+  final password_controller = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -37,44 +39,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    final email = TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      autofocus: false,
-      decoration: InputDecoration(
-        hintText: 'Email',
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-      ),
-    );
-
-    final password = TextFormField(
-      autofocus: false,
-      initialValue: '',
-      obscureText: true,
-      decoration: InputDecoration(
-        hintText: 'Password',
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-      ),
-    );
-
-    final loginButton = Container(
-      child: TextButton(
-        style: TextButton.styleFrom(primary: Colors.blue),
-        onPressed: () => {
-          _login().then((value) => {
-                if (value == true)
-                  {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
-                    )
-                  }
-              })
-        },
-        child: Text('Log In',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-      ),
-    );
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -107,11 +71,51 @@ class _LoginState extends State<Login> {
                       ),
                     )),
                     SizedBox(height: 48.0),
-                    email,
+                    TextFormField(
+                      keyboardType: TextInputType.emailAddress,
+                      controller: email_controller,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                        hintText: 'Email',
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                      ),
+                    ),
                     SizedBox(height: 8.0),
-                    password,
+                    TextFormField(
+                      autofocus: false,
+                      controller: password_controller,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: 'Password',
+                        contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                      ),
+                    ),
                     SizedBox(height: 24.0),
-                    loginButton,
+                    Container(
+                      child: TextButton(
+                        style: TextButton.styleFrom(primary: Colors.blue),
+                        onPressed: () => {
+                          _login(email_controller.text,
+                                  password_controller.text)
+                              .then((value) => {
+                                    if (value == true)
+                                      {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HomeScreen()),
+                                        )
+                                      }
+                                  })
+                        },
+                        child: Text('Log In',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
+                      ),
+                    ),
                   ],
                 ),
               ),

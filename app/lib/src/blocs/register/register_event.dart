@@ -5,4 +5,8 @@ abstract class RegisterEvent {
   const RegisterEvent();
 }
 
-class RegisterLoadEvent extends RegisterEvent {}
+class RegisterClickOnRegisterEvent extends RegisterEvent {}
+
+class RegisterToLoginEvent extends RegisterEvent {}
+
+class RegisterToLoginDoneEvent extends RegisterEvent {}

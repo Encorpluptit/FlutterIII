@@ -3,24 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timetracking/src/blocs/login/login_bloc.dart';
 import 'package:timetracking/src/blocs/register/register_bloc.dart';
-import 'package:timetracking/src/ui/screens/register.dart';
-import 'package:timetracking/src/ui/widgets/login_page.dart';
+import 'package:timetracking/src/ui/screens/login.dart';
+import 'package:timetracking/src/ui/widgets/register_page.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: BlocListener<LoginBloc, LoginState>(
+      body: BlocListener<RegisterBloc, RegisterState>(
         listener: (context, state) {
-          if (state is LoginLoadedFailure) {
+          if (state is RegisterLoadedFailure) {
             const snackBar = SnackBar(
               duration: Duration(minutes: 5),
               content: Text(
@@ -29,29 +29,31 @@ class _LoginScreenState extends State<LoginScreen> {
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
-          if (state is LoginToRegister) {
-            // print("LoginToRegisterOK");
-            BlocProvider.of<LoginBloc>(context).add(LoginToRegisterDoneEvent());
+          if (state is RegisterToLogin) {
+            // print("RegisterToRegisterOK");
+            BlocProvider.of<RegisterBloc>(context)
+                .add(RegisterToLoginDoneEvent());
             Navigator.pushReplacement(
                 context,
                 CupertinoPageRoute(
-                    builder: (context) => BlocProvider(
-                          create: (_) => RegisterBloc(),
-                          child: const RegisterScreen(),
-                        )));
+                  builder: (context) => BlocProvider(
+                    create: (_) => LoginBloc(),
+                    child: const LoginScreen(),
+                  ),
+                ));
           }
         },
-        child: BlocBuilder<LoginBloc, LoginState>(
-            buildWhen: (LoginState previous, LoginState current) {
+        child: BlocBuilder<RegisterBloc, RegisterState>(
+            buildWhen: (RegisterState previous, RegisterState current) {
           return (true);
         }, builder: (context, state) {
-          if (state is LoginOnPage) {
-            return (const LoginPage());
-          } else if (state is LoginLoading) {
+          if (state is RegisterOnPage) {
+            return (const RegisterPage());
+          } else if (state is RegisterLoading) {
             return (const Center(
               child: CircularProgressIndicator(),
             ));
-          } else if (state is LoginLoadedFailure) {
+          } else if (state is RegisterLoadedFailure) {
             return (Container());
           } else {
             return (Container());

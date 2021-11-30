@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:timetracking/src/blocs/register/register_bloc.dart';
 import 'package:timetracking/src/ui/themes/themes.dart';
 import 'package:timetracking/src/ui/widgets/big_button.dart';
 
@@ -25,7 +27,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(24.0, 40.0, 24.0, 0),
           child: Column(
@@ -135,7 +137,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     style: regular16pt.copyWith(color: grey),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      BlocProvider.of<RegisterBloc>(context)
+                          .add(RegisterToLoginEvent());
+                    },
                     child: Text(
                       'Login',
                       style: regular16pt.copyWith(color: blue),

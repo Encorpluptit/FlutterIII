@@ -102,7 +102,7 @@ class HomeScreenState extends State<HomeScreen>
                       margin: EdgeInsets.all(0),
                       height: MediaQuery.of(context).size.height,
                       width: 300,
-                      color: Colors.white,
+                      color: Theme.of(context).primaryColor,
                       child: listDrawerItems()),
                 ),
           Container(

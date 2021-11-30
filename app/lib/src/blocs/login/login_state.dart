@@ -21,3 +21,7 @@ class LoginLoadedFailure extends LoginState {
 class LoginOnPage extends LoginState {
   const LoginOnPage();
 }
+
+class LoginToRegister extends LoginState {
+  const LoginToRegister();
+}

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:timetracking/src/ui/screens/home.dart';
+import 'package:timetracking/src/ui/screens/login.dart';
 
 class NavigationRouteInterface {
   final Icon icon;
@@ -10,7 +11,8 @@ class NavigationRouteInterface {
 
 const List<NavigationRouteInterface> navigationRoutes = [
   NavigationRouteInterface(Icon(Icons.home), "Home", HomeScreen()),
-    NavigationRouteInterface(Icon(Icons.home), "Home2", HomeScreen()),
+  NavigationRouteInterface(Icon(Icons.home), "Home2", HomeScreen()),
+  NavigationRouteInterface(Icon(Icons.home), "Account", LoginScreen()),
 ];
 
 class MainRoutes extends StatefulWidget {

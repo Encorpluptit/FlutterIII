@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:timetracking/src/blocs/login/login_bloc.dart';
 import 'package:timetracking/src/ui/themes/themes.dart';
 import 'package:timetracking/src/ui/widgets/big_button.dart';
 
@@ -115,7 +117,10 @@ class _LoginPageState extends State<LoginPage> {
                     style: regular16pt.copyWith(color: grey),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      BlocProvider.of<LoginBloc>(context)
+                          .add(LoginToRegisterEvent());
+                    },
                     child: Text(
                       'Register',
                       style: regular16pt.copyWith(color: blue),

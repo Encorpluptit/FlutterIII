@@ -5,4 +5,8 @@ abstract class LoginEvent {
   const LoginEvent();
 }
 
-class LoginLoadEvent extends LoginEvent {}
+class LoginClickOnLoginEvent extends LoginEvent {}
+
+class LoginToRegisterEvent extends LoginEvent {}
+
+class LoginToRegisterDoneEvent extends LoginEvent {}

@@ -1,12 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:website/blocs/login/bloc.dart';
-import 'package:website/screens/home/home_screen.dart';
-import 'package:website/utils/color_constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:website/utils/shared_preferences.dart';
-import 'package:website/utils/global.dart' as global;
+import 'package:website/screens/layout.dart';
 import 'package:website/widgets/login/form.dart';
 
 class Login extends StatefulWidget {
@@ -35,18 +30,24 @@ class _LoginState extends State<Login> {
                 backgroundColor: Colors.red, content: Text(state.message)));
           }
           if (state is LoginRequestSuccessState) {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => HomeScreen()));
+            Navigator.of(context)
+                .pushNamedAndRemoveUntil('/home', (route) => false);
+          }
+          if (state is LoginLogoutState) {
+            print('dispatch');
+            BlocProvider.of<LoginBloc>(context).add(LoginWaitingEvent());
           }
         },
         child: BlocBuilder<LoginBloc, LoginState>(
             buildWhen: (LoginState previous, LoginState current) {
-          if (current is LoginRequestFailureState) {
+          if (current is LoginRequestFailureState ||
+              current is LoginWaitingState ||
+              current is LoginLogoutState) {
             return (false);
           }
           return (true);
         }, builder: (context, state) {
-          if (state is LoginWaitingState) {
+          if (state is LoginWaitingState || state is LoginLogoutState) {
             return (LoginForm());
           }
           return (Container());

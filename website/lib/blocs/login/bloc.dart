@@ -14,6 +14,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginWaitingEvent>((event, emit) => emit(LoginWaitingState()));
     on<LoginRequestEvent>(
         (event, emit) async => emit(await _LoginRequest(event)));
+    on<LoginLogoutEvent>((event, emit) async => emit(await _Logout()));
   }
 
   Future<LoginState> _LoginRequest(LoginRequestEvent event) async {
@@ -48,5 +49,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     await MySharedPreferences()
         .set("AUTH", FirebaseAuth.instance.currentUser!.uid);
     return LoginRequestSuccessState();
+  }
+
+  Future<LoginState> _Logout() async {
+    await FirebaseAuth.instance.signOut();
+    await MySharedPreferences().unset("AUTH");
+
+    return (LoginLogoutState());
   }
 }

@@ -13,3 +13,5 @@ class LoginRequestEvent extends LoginEvent {
 
   LoginRequestEvent(this.email, this.password);
 }
+
+class LoginLogoutEvent extends LoginEvent {}

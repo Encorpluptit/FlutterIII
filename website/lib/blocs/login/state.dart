@@ -4,9 +4,7 @@ abstract class LoginState {
   const LoginState();
 }
 
-class LoginWaitingState extends LoginState {
-  LoginWaitingState();
-}
+class LoginWaitingState extends LoginState {}
 
 class LoginRequestSuccessState extends LoginState {}
 
@@ -15,3 +13,5 @@ class LoginRequestFailureState extends LoginState {
 
   LoginRequestFailureState(this.message);
 }
+
+class LoginLogoutState extends LoginState {}

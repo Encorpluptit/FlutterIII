@@ -73,6 +73,11 @@ class _LoginForm extends State<LoginForm> {
                         contentPadding:
                             EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                       ),
+                      onFieldSubmitted: (value) {
+                        BlocProvider.of<LoginBloc>(context).add(
+                            LoginRequestEvent(email_controller.text,
+                                password_controller.text));
+                      },
                     ),
                     SizedBox(height: 24.0),
                     Container(

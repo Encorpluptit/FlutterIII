@@ -27,7 +27,6 @@ class BigButton extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: InkWell(
-            onTap: () {},
             borderRadius: BorderRadius.circular(14.0),
             child: Center(
               child: Text(

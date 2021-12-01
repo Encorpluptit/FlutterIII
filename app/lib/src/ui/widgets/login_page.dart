@@ -104,7 +104,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  print("CLICK");
                   BlocProvider.of<LoginBloc>(context).add(
                       LoginClickOnLoginEvent(
                           emailController.text, passwordController.text));

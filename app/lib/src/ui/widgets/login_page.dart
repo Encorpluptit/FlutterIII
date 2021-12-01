@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:timetracking/src/blocs/login/login_bloc.dart';
+import 'package:timetracking/src/blocs/login/bloc.dart';
 import 'package:timetracking/src/ui/themes/themes.dart';
 import 'package:timetracking/src/ui/widgets/big_button.dart';
 
@@ -12,7 +12,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
   bool passwordVisible = false;
   void togglePassword() {
@@ -56,9 +56,9 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(14.0),
                       ),
                       child: TextFormField(
-                        controller: usernameController,
+                        controller: emailController,
                         decoration: InputDecoration(
-                          hintText: 'Username',
+                          hintText: 'Email',
                           hintStyle: heading6.copyWith(color: grey),
                           border: const OutlineInputBorder(
                             borderSide: BorderSide.none,
@@ -102,10 +102,18 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 32,
               ),
-              BigButton(
-                  buttonColor: blue,
-                  textValue: "Login",
-                  textColor: Colors.white),
+              GestureDetector(
+                onTap: () {
+                  print("CLICK");
+                  BlocProvider.of<LoginBloc>(context).add(
+                      LoginClickOnLoginEvent(
+                          emailController.text, passwordController.text));
+                },
+                child: BigButton(
+                    buttonColor: blue,
+                    textValue: "Login",
+                    textColor: Colors.white),
+              ),
               const SizedBox(
                 height: 50,
               ),

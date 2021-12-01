@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:timetracking/src/blocs/login/login_bloc.dart';
+import 'package:timetracking/src/blocs/login/bloc.dart';
 import 'package:timetracking/src/blocs/register/register_bloc.dart';
 import 'package:timetracking/src/ui/screens/register.dart';
 import 'package:timetracking/src/ui/widgets/login_page.dart';
@@ -23,8 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
           if (state is LoginLoadedFailure) {
             const snackBar = SnackBar(
               duration: Duration(minutes: 5),
-              content: Text(
-                  'Eror while retriving the movies. Please try again later.'),
+              content: Text('Error.'),
               backgroundColor: Colors.red,
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);

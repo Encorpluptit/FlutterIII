@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:timetracking/src/blocs/login/login_bloc.dart';
+import 'package:timetracking/src/blocs/login/bloc.dart';
 import 'package:timetracking/src/blocs/register/register_bloc.dart';
 import 'package:timetracking/src/ui/screens/login.dart';
 import 'package:timetracking/src/ui/widgets/register_page.dart';

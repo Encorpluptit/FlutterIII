@@ -1,14 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:website/screens/home/home_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:website/routes/private_route.dart';
+import 'package:website/screens/layout.dart';
 import 'package:website/screens/login/login.dart';
 import 'package:website/utils/global.dart' as global;
 import 'package:website/utils/shared_preferences.dart';
 
+import 'blocs/login/bloc.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(App());
+  runApp(MultiBlocProvider(providers: [
+    BlocProvider(create: (context) {
+      return LoginBloc();
+    }),
+  ], child: App()));
 }
 
 Future<bool> _loadCredidendials() async {
@@ -65,24 +73,29 @@ class _AppState extends State<App> {
       return CircularProgressIndicator();
     }
 
+    Map<String, WidgetBuilder> routes = {
+      '/': (BuildContext context) => PrivateRoute(false, Login()),
+      '/home': (BuildContext context) => PrivateRoute(true, HomeScreen()),
+    };
+
     return FutureBuilder(
       future: _loadCredidendials(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
+              initialRoute: (snapshot.data == true ? '/home' : '/'),
+              routes: routes,
               title: 'TimeTracking',
-              home: (snapshot.data == true ? HomeScreen() : Login()));
+              theme: ThemeData(
+                brightness: Brightness.light,
+              ),
+              darkTheme: ThemeData(
+                brightness: Brightness.dark,
+              ));
         } else {
           return Center(child: CircularProgressIndicator());
         }
       },
-    );
-
-    return MaterialApp(
-      initialRoute: '/',
-      theme: ThemeData(fontFamily: 'HelveticaNeue'),
-      debugShowCheckedModeBanner: false,
-      title: 'TimeTracking',
     );
   }
 }

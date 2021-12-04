@@ -4,8 +4,8 @@ abstract class NewsState {
   const NewsState();
 }
 
-class LoginLoading extends NewsState {
-  const LoginLoading();
+class NewsLoading extends NewsState {
+  const NewsLoading();
 }
 
 class NewsLoadedSuccess extends NewsState {

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timetracking/src/blocs/login/bloc.dart';
-import 'package:timetracking/src/blocs/register/register_bloc.dart';
+import 'package:timetracking/src/blocs/register/bloc.dart';
 import 'package:timetracking/src/ui/screens/login.dart';
 import 'package:timetracking/src/ui/widgets/register_page.dart';
 
@@ -24,7 +24,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             const snackBar = SnackBar(
               duration: Duration(minutes: 5),
               content: Text(
-                  'Eror while retriving the movies. Please try again later.'),
+                  'Error while retriving the movies. Please try again later.'),
               backgroundColor: Colors.red,
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);

@@ -35,8 +35,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'user-not-found':
-          return LoginLoadedFailure("No user found that email");
-        case "Wrong password provided":
+          return LoginLoadedFailure("No user found for this email");
+        case "wrong-password":
           return LoginLoadedFailure("Wrong password provided");
         case 'invalid-email':
           return LoginLoadedFailure("Email is not well formatted");

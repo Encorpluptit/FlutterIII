@@ -30,10 +30,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         case 'invalid-email':
           return LoginLoadedFailure("Email is not well formatted");
         default:
-          return LoginLoadedFailure("Unknown error: " + e.code.toString());
+          return LoginLoadedFailure("Unknown error: ${e.message}");
       }
     } catch (e) {
-      return LoginLoadedFailure("You're not an administrator");
+      return LoginLoadedFailure(e.toString());
     }
   }
 }

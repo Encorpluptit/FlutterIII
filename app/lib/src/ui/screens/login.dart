@@ -21,9 +21,9 @@ class _LoginScreenState extends State<LoginScreen> {
       body: BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
           if (state is LoginLoadedFailure) {
-            const snackBar = SnackBar(
-              duration: Duration(minutes: 5),
-              content: Text('Error.'),
+            final snackBar = SnackBar(
+              duration: const Duration(seconds: 5),
+              content: Text('Error ${state.cause}'),
               backgroundColor: Colors.red,
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
             buildWhen: (LoginState previous, LoginState current) {
           return (true);
         }, builder: (context, state) {
-          if (state is LoginOnPage) {
+          if (state is LoginOnPage || state is LoginLoadedFailure) {
             return (const LoginPage());
           } else if (state is LoginLoading) {
             return (const Center(

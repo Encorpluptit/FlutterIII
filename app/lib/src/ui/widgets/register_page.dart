@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:timetracking/src/blocs/register/bloc.dart';
 import 'package:timetracking/src/ui/themes/themes.dart';
 import 'package:timetracking/src/ui/widgets/big_button.dart';
 
@@ -11,7 +13,6 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController();
-  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   bool passwordVisible = false;
   void togglePassword() {
@@ -55,7 +56,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         borderRadius: BorderRadius.circular(14.0),
                       ),
                       child: TextFormField(
-                        controller: usernameController,
+                        controller: emailController,
                         decoration: InputDecoration(
                           hintText: 'Email',
                           hintStyle: heading6.copyWith(color: grey),
@@ -74,25 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         borderRadius: BorderRadius.circular(14.0),
                       ),
                       child: TextFormField(
-                        controller: usernameController,
-                        decoration: InputDecoration(
-                          hintText: 'Username',
-                          hintStyle: heading6.copyWith(color: grey),
-                          border: const OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: lightGrey,
-                        borderRadius: BorderRadius.circular(14.0),
-                      ),
-                      child: TextFormField(
+                        controller: passwordController,
                         obscureText: !passwordVisible,
                         decoration: InputDecoration(
                           hintText: 'Password',
@@ -120,12 +103,16 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(
                 height: 32,
               ),
-              BigButton(
-                  buttonColor: blue,
-                  textValue: "Register",
-                  textColor: Colors.white),
-              const SizedBox(
-                height: 50,
+              GestureDetector(
+                onTap: () {
+                  BlocProvider.of<RegisterBloc>(context).add(
+                      RegisterClickOnRegisterEvent(
+                          emailController.text, passwordController.text));
+                },
+                child: BigButton(
+                    buttonColor: blue,
+                    textValue: "Register",
+                    textColor: Colors.white),
               ),
             ],
           ),

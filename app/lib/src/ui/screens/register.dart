@@ -19,20 +19,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: BlocListener<RegisterBloc, RegisterState>(
         listener: (context, state) {
           if (state is RegisterLoadedFailure) {
-            const snackBar = SnackBar(
-              duration: Duration(minutes: 5),
-              content: Text(
-                  'Error while retriving the movies. Please try again later.'),
+            var snackBar = SnackBar(
+              duration: const Duration(seconds: 5),
+              content: Text(state.cause),
               backgroundColor: Colors.red,
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+          if (state is RegisterLoadedSuccess) {
+            Navigator.pop(context);
           }
         },
         child: BlocBuilder<RegisterBloc, RegisterState>(
             buildWhen: (RegisterState previous, RegisterState current) {
           return (true);
         }, builder: (context, state) {
-          if (state is RegisterOnPage) {
+          if (state is RegisterOnPage || state is RegisterLoadedFailure) {
             return (const RegisterPage());
           } else if (state is RegisterLoading) {
             return (const Center(

@@ -114,9 +114,6 @@ class _LoginPageState extends State<LoginPage> {
                     textValue: "Login",
                     textColor: Colors.white),
               ),
-              const SizedBox(
-                height: 50,
-              )
             ],
           ),
         ),

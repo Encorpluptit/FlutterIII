@@ -9,7 +9,8 @@ class LoginLoading extends LoginState {
 }
 
 class LoginLoadedSuccess extends LoginState {
-  const LoginLoadedSuccess();
+  String? email;
+  LoginLoadedSuccess(this.email);
 }
 
 class LoginLoadedFailure extends LoginState {

@@ -19,19 +19,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Future<LoginState> _loginRequest(LoginClickOnLoginEvent event) async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: event.email, password: event.password);
-
-      if (userCredential.user != null) {
-        final query = FirebaseFirestore.instanceFor(app: global.app)
-            .collection("users")
-            .doc(userCredential.user!.uid);
-        final result = await query.get();
-        if (result.data()!["role"] != "Admin") {
-          return (LoginLoadedFailure("You're not an administrator"));
-        }
-      }
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: event.email, password: event.password);
+      await MySharedPreferences()
+          .set("AUTH", FirebaseAuth.instance.currentUser!.uid);
+      return LoginLoadedSuccess(FirebaseAuth.instance.currentUser!.email);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'user-not-found':
@@ -46,9 +38,5 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     } catch (e) {
       return LoginLoadedFailure("You're not an administrator");
     }
-
-    await MySharedPreferences()
-        .set("AUTH", FirebaseAuth.instance.currentUser!.uid);
-    return const LoginLoadedSuccess();
   }
 }

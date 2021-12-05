@@ -5,10 +5,5 @@ part 'event.dart';
 part 'state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  RegisterBloc() : super(const RegisterOnPage()) {
-    on<RegisterClickOnRegisterEvent>(
-        (event, emit) => emit(const RegisterLoading()));
-    on<RegisterToLoginEvent>((event, emit) => emit(const RegisterToLogin()));
-    on<RegisterToLoginDoneEvent>((event, emit) => emit(const RegisterOnPage()));
-  }
+  RegisterBloc() : super(const RegisterOnPage()) {}
 }

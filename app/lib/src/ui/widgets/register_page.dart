@@ -129,25 +129,6 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(
                 height: 50,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Don't have an account? ",
-                    style: regular16pt.copyWith(color: grey),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      BlocProvider.of<RegisterBloc>(context)
-                          .add(RegisterToLoginEvent());
-                    },
-                    child: Text(
-                      'Login',
-                      style: regular16pt.copyWith(color: blue),
-                    ),
-                  ),
-                ],
-              ),
             ],
           ),
         ),

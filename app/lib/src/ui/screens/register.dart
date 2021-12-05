@@ -29,19 +29,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
-          if (state is RegisterToLogin) {
-            // print("RegisterToRegisterOK");
-            BlocProvider.of<RegisterBloc>(context)
-                .add(RegisterToLoginDoneEvent());
-            Navigator.pushReplacement(
-                context,
-                CupertinoPageRoute(
-                  builder: (context) => BlocProvider(
-                    create: (_) => LoginBloc(),
-                    child: const LoginScreen(),
-                  ),
-                ));
-          }
         },
         child: BlocBuilder<RegisterBloc, RegisterState>(
             buildWhen: (RegisterState previous, RegisterState current) {

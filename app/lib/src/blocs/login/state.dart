@@ -9,7 +9,7 @@ class LoginLoading extends LoginState {
 }
 
 class LoginLoadedSuccess extends LoginState {
-  String? email;
+  String email;
   LoginLoadedSuccess(this.email);
 }
 
@@ -21,8 +21,4 @@ class LoginLoadedFailure extends LoginState {
 
 class LoginOnPage extends LoginState {
   const LoginOnPage();
-}
-
-class LoginToRegister extends LoginState {
-  const LoginToRegister();
 }

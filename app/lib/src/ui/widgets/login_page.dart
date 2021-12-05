@@ -116,26 +116,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const SizedBox(
                 height: 50,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Don't have an account? ",
-                    style: regular16pt.copyWith(color: grey),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      BlocProvider.of<LoginBloc>(context)
-                          .add(LoginToRegisterEvent());
-                    },
-                    child: Text(
-                      'Register',
-                      style: regular16pt.copyWith(color: blue),
-                    ),
-                  ),
-                ],
-              ),
+              )
             ],
           ),
         ),

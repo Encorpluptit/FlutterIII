@@ -13,8 +13,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(const LoginOnPage()) {
     on<LoginClickOnLoginEvent>(
         (event, emit) async => emit(await _loginRequest(event)));
-    on<LoginToRegisterEvent>((event, emit) => emit(const LoginToRegister()));
-    on<LoginToRegisterDoneEvent>((event, emit) => emit(const LoginOnPage()));
   }
 
   Future<LoginState> _loginRequest(LoginClickOnLoginEvent event) async {
@@ -23,7 +21,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           email: event.email, password: event.password);
       await MySharedPreferences()
           .set("AUTH", FirebaseAuth.instance.currentUser!.uid);
-      return LoginLoadedSuccess(FirebaseAuth.instance.currentUser!.email);
+      return LoginLoadedSuccess(event.email);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'user-not-found':

@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:timetracking/src/blocs/account/bloc.dart';
 import 'package:timetracking/src/blocs/login/bloc.dart';
 import 'package:timetracking/src/blocs/register/bloc.dart';
+import 'package:timetracking/src/ui/screens/account.dart';
 import 'package:timetracking/src/ui/screens/register.dart';
 import 'package:timetracking/src/ui/widgets/login_page.dart';
 
@@ -28,16 +30,8 @@ class _LoginScreenState extends State<LoginScreen> {
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
-          if (state is LoginToRegister) {
-            // print("LoginToRegisterOK");
-            BlocProvider.of<LoginBloc>(context).add(LoginToRegisterDoneEvent());
-            Navigator.pushReplacement(
-                context,
-                CupertinoPageRoute(
-                    builder: (context) => BlocProvider(
-                          create: (_) => RegisterBloc(),
-                          child: const RegisterScreen(),
-                        )));
+          if (state is LoginLoadedSuccess) {
+            Navigator.pop(context, state.email);
           }
         },
         child: BlocBuilder<LoginBloc, LoginState>(

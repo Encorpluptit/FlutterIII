@@ -11,7 +11,3 @@ class LoginClickOnLoginEvent extends LoginEvent {
 
   const LoginClickOnLoginEvent(this.email, this.password);
 }
-
-class LoginToRegisterEvent extends LoginEvent {}
-
-class LoginToRegisterDoneEvent extends LoginEvent {}

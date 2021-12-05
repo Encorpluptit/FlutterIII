@@ -21,7 +21,3 @@ class RegisterLoadedFailure extends RegisterState {
 class RegisterOnPage extends RegisterState {
   const RegisterOnPage();
 }
-
-class RegisterToLogin extends RegisterState {
-  const RegisterToLogin();
-}

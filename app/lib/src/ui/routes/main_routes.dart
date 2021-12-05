@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:timetracking/src/blocs/account/bloc.dart';
 import 'package:timetracking/src/blocs/login/bloc.dart';
 import 'package:timetracking/src/blocs/register/bloc.dart';
+import 'package:timetracking/src/ui/screens/account.dart';
 import 'package:timetracking/src/ui/screens/login.dart';
 import 'package:timetracking/src/ui/screens/register.dart';
 
@@ -17,16 +19,11 @@ List<NavigationRouteInterface> navigationRoutes = [
       const Icon(Icons.person),
       "Account",
       BlocProvider(
-        create: (_) => LoginBloc(),
-        child: const LoginScreen(),
+        create: (_) => AccountBloc(),
+        child: const AccountScreen(),
       )),
-  NavigationRouteInterface(
-      const Icon(Icons.person),
-      "Account",
-      BlocProvider(
-        create: (_) => RegisterBloc(),
-        child: const RegisterScreen(),
-      )),
+  const NavigationRouteInterface(
+      Icon(Icons.person), "Placeholder", CircularProgressIndicator()),
 ];
 
 class MainRoutes extends StatefulWidget {

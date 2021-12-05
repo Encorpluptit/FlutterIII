@@ -6,6 +6,7 @@ import 'package:timetracking/src/blocs/login/bloc.dart';
 import 'package:timetracking/src/blocs/register/bloc.dart';
 import 'package:timetracking/src/ui/screens/login.dart';
 import 'package:timetracking/src/ui/screens/register.dart';
+import 'package:timetracking/src/ui/widgets/account_guest.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({Key? key}) : super(key: key);
@@ -51,9 +52,7 @@ class _AccountScreenState extends State<AccountScreen> {
           return (true);
         }, builder: (context, state) {
           if (state is AccountGuest) {
-            return (const Center(
-              child: CircularProgressIndicator(),
-            ));
+            return (const AccountGuestPage());
           } else if (state is AccountLoggedIn) {
             return (const Center(
               child: CircularProgressIndicator(),

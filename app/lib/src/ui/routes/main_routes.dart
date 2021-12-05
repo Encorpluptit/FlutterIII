@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:timetracking/src/ui/screens/home.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:timetracking/src/blocs/account/bloc.dart';
+import 'package:timetracking/src/ui/screens/account.dart';
 
 class NavigationRouteInterface {
   final Icon icon;
@@ -8,9 +10,16 @@ class NavigationRouteInterface {
   const NavigationRouteInterface(this.icon, this.label, this.widget);
 }
 
-const List<NavigationRouteInterface> navigationRoutes = [
-  NavigationRouteInterface(Icon(Icons.home), "Home", HomeScreen()),
-    NavigationRouteInterface(Icon(Icons.home), "Home2", HomeScreen()),
+List<NavigationRouteInterface> navigationRoutes = [
+  NavigationRouteInterface(
+      const Icon(Icons.person),
+      "Account",
+      BlocProvider(
+        create: (_) => AccountBloc(),
+        child: const AccountScreen(),
+      )),
+  const NavigationRouteInterface(
+      Icon(Icons.person), "Placeholder", CircularProgressIndicator()),
 ];
 
 class MainRoutes extends StatefulWidget {
@@ -28,7 +37,7 @@ class HomeMainRouteState extends State<MainRoutes> {
     super.initState();
   }
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index) async {
     setState(() {
       _selectedIndex = index;
     });
@@ -38,17 +47,16 @@ class HomeMainRouteState extends State<MainRoutes> {
   Widget build(BuildContext context) {
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          items: navigationRoutes.map<BottomNavigationBarItem>((route) {
-            return (BottomNavigationBarItem(
-              icon: route.icon,
-              label: route.label,
-            ));
-          }).toList(),
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.blue,
-          onTap: _onItemTapped,
-        ),
+            type: BottomNavigationBarType.fixed,
+            items: navigationRoutes.map<BottomNavigationBarItem>((route) {
+              return (BottomNavigationBarItem(
+                icon: route.icon,
+                label: route.label,
+              ));
+            }).toList(),
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.blue,
+            onTap: _onItemTapped),
         body: Center(child: navigationRoutes.elementAt(_selectedIndex).widget));
   }
 }

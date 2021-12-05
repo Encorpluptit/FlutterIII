@@ -1,11 +1,10 @@
 import 'dart:async';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:timetracking/src//utils/global.dart' as global;
 import 'package:timetracking/src/utils/shared_preferences.dart';
-import 'package:timetracking/src/utils/global.dart' as global;
 
 part 'event.dart';
 part 'state.dart';
@@ -20,7 +19,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Future<LoginState> _loginRequest(LoginClickOnLoginEvent event) async {
     try {
-      print("IN HERE");
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
               email: event.email, password: event.password);
@@ -35,14 +33,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         }
       }
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        return LoginLoadedFailure("No user found that email");
-      } else if (e.code == 'wrong-password') {
-        return LoginLoadedFailure("Wrong password provided");
-      } else if (e.code == 'invalid-email') {
-        return LoginLoadedFailure("Email is not well formatted");
-      } else {
-        return LoginLoadedFailure("Unknown error: " + e.code.toString());
+      switch (e.code) {
+        case 'user-not-found':
+          return LoginLoadedFailure("No user found that email");
+        case "Wrong password provided":
+          return LoginLoadedFailure("Wrong password provided");
+        case 'invalid-email':
+          return LoginLoadedFailure("Email is not well formatted");
+        default:
+          return LoginLoadedFailure("Unknown error: " + e.code.toString());
       }
     } catch (e) {
       return LoginLoadedFailure("You're not an administrator");

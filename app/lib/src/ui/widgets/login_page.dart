@@ -75,6 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                         borderRadius: BorderRadius.circular(14.0),
                       ),
                       child: TextFormField(
+                        controller: passwordController,
                         obscureText: !passwordVisible,
                         decoration: InputDecoration(
                           hintText: 'Password',

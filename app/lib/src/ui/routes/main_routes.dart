@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timetracking/src/blocs/account/bloc.dart';
-import 'package:timetracking/src/blocs/login/bloc.dart';
-import 'package:timetracking/src/blocs/register/bloc.dart';
 import 'package:timetracking/src/ui/screens/account.dart';
-import 'package:timetracking/src/ui/screens/login.dart';
-import 'package:timetracking/src/ui/screens/register.dart';
 
 class NavigationRouteInterface {
   final Icon icon;
@@ -41,7 +37,7 @@ class HomeMainRouteState extends State<MainRoutes> {
     super.initState();
   }
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index) async {
     setState(() {
       _selectedIndex = index;
     });
@@ -51,17 +47,16 @@ class HomeMainRouteState extends State<MainRoutes> {
   Widget build(BuildContext context) {
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          items: navigationRoutes.map<BottomNavigationBarItem>((route) {
-            return (BottomNavigationBarItem(
-              icon: route.icon,
-              label: route.label,
-            ));
-          }).toList(),
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.blue,
-          onTap: _onItemTapped,
-        ),
+            type: BottomNavigationBarType.fixed,
+            items: navigationRoutes.map<BottomNavigationBarItem>((route) {
+              return (BottomNavigationBarItem(
+                icon: route.icon,
+                label: route.label,
+              ));
+            }).toList(),
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.blue,
+            onTap: _onItemTapped),
         body: Center(child: navigationRoutes.elementAt(_selectedIndex).widget));
   }
 }

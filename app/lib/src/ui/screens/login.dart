@@ -1,11 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:timetracking/src/blocs/account/bloc.dart';
 import 'package:timetracking/src/blocs/login/bloc.dart';
-import 'package:timetracking/src/blocs/register/bloc.dart';
-import 'package:timetracking/src/ui/screens/account.dart';
-import 'package:timetracking/src/ui/screens/register.dart';
 import 'package:timetracking/src/ui/widgets/login_page.dart';
 
 class LoginScreen extends StatefulWidget {

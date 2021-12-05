@@ -13,8 +13,8 @@ class AccountGuest extends AccountState {
   const AccountGuest();
 }
 
-class LoginOnPage extends AccountState {
-  const LoginOnPage();
+class AccountLoading extends AccountState {
+  const AccountLoading();
 }
 
 class AccountNavigate extends AccountState {

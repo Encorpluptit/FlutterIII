@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:timetracking/src//utils/global.dart' as global;
 import 'package:timetracking/src/utils/shared_preferences.dart';
 
 part 'event.dart';
@@ -21,6 +19,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           email: event.email, password: event.password);
       await MySharedPreferences()
           .set("AUTH", FirebaseAuth.instance.currentUser!.uid);
+      await MySharedPreferences().set("email", event.email);
       return LoginLoadedSuccess(event.email);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {

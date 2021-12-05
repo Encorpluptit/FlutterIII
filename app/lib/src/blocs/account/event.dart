@@ -13,3 +13,12 @@ class AccountNavigateEvent extends AccountEvent {
 class AccountNavigationDoneEvent extends AccountEvent {
   const AccountNavigationDoneEvent();
 }
+
+class AccountLoginEvent extends AccountEvent {
+  final String email;
+  const AccountLoginEvent(this.email);
+}
+
+class AccountLogoutEvent extends AccountEvent {
+  const AccountLogoutEvent();
+}

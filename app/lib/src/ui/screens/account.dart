@@ -7,6 +7,8 @@ import 'package:timetracking/src/blocs/register/bloc.dart';
 import 'package:timetracking/src/ui/screens/login.dart';
 import 'package:timetracking/src/ui/screens/register.dart';
 import 'package:timetracking/src/ui/widgets/account_guest.dart';
+import 'package:timetracking/src/ui/widgets/account_loading.dart';
+import 'package:timetracking/src/ui/widgets/account_logged.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({Key? key}) : super(key: key);
@@ -21,7 +23,7 @@ class _AccountScreenState extends State<AccountScreen> {
     return Scaffold(
       appBar: AppBar(),
       body: BlocListener<AccountBloc, AccountState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is AccountNavigate) {
             BlocProvider.of<AccountBloc>(context)
                 .add(const AccountNavigationDoneEvent());
@@ -36,13 +38,17 @@ class _AccountScreenState extends State<AccountScreen> {
                             )));
                 break;
               case "login":
-                Navigator.push(
+                final email = await Navigator.push(
                     context,
                     CupertinoPageRoute(
                         builder: (context) => BlocProvider(
                               create: (_) => LoginBloc(),
                               child: const LoginScreen(),
                             )));
+                if (email is String) {
+                  BlocProvider.of<AccountBloc>(context)
+                      .add(AccountLoginEvent(email));
+                }
                 break;
             }
           }
@@ -54,9 +60,9 @@ class _AccountScreenState extends State<AccountScreen> {
           if (state is AccountGuest) {
             return (const AccountGuestPage());
           } else if (state is AccountLoggedIn) {
-            return (const Center(
-              child: CircularProgressIndicator(),
-            ));
+            return (AccountLoggedInPage(email: state.email));
+          } else if (state is AccountLoading) {
+            return (const AccountLoadingPage());
           } else {
             return (Container());
           }

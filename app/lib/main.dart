@@ -14,7 +14,7 @@ void main() {
     BlocProvider(create: (context) {
       return LoginBloc();
     }),
-  ], child: App()));
+  ], child: const App()));
 }
 
 Future<bool> _loadCredentials() async {

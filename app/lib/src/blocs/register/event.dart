@@ -1,4 +1,4 @@
-part of 'register_bloc.dart';
+part of 'bloc.dart';
 
 @immutable
 abstract class RegisterEvent {

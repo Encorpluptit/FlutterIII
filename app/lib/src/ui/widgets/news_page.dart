@@ -12,133 +12,87 @@ class NewsPage extends StatefulWidget {
 }
 
 class _NewsPageState extends State<NewsPage> {
-  final newsData = "data";
-  /* final passwordController = TextEditingController(); */
-  bool passwordVisible = false;
+  List<Map<String, dynamic>> newsData = [
+    {"title": "HelloJPNFEPKJNVJPENVJENZEVIJNEIVN", "content": "helloeOKFEOIJFOIEJFIOEJFOIJSFJSIPJFE9ESJSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS","groups": ["Manager", "User"],"date": "13/07/2021"},
+    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"},
+    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"},
+    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"},
+    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"},
+    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"},
+    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"},
+    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"},
+    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"},
+    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"}
+  ];
+  /* bool passwordVisible = false;
   void togglePassword() {
     setState(() {
       passwordVisible = !passwordVisible;
     });
   }
-
+ */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24.0, 40.0, 24.0, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      body: Column(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Time Tracker',
-                    style: heading2.copyWith(color: black),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                ],
+              const SizedBox(
+                height: 20,
+              ),
+              Text(
+                'News',
+                style: heading2.copyWith(color: black),
               ),
               const SizedBox(
-                height: 48,
-              ),
-              Form(
-                child: Column(
-                  /* children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: lightGrey,
-                        borderRadius: BorderRadius.circular(14.0),
-                      ),
-                      child: TextFormField(
-                        controller: emailController,
-                        decoration: InputDecoration(
-                          hintText: 'Email',
-                          hintStyle: heading6.copyWith(color: grey),
-                          border: const OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: lightGrey,
-                        borderRadius: BorderRadius.circular(14.0),
-                      ),
-                      child: TextFormField(
-                        obscureText: !passwordVisible,
-                        decoration: InputDecoration(
-                          hintText: 'Password',
-                          hintStyle: heading6.copyWith(color: grey),
-                          suffixIcon: IconButton(
-                            color: grey,
-                            splashRadius: 1,
-                            icon: Icon(passwordVisible
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined),
-                            onPressed: togglePassword,
-                          ),
-                          border: const OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ], */
-                ),
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              GestureDetector(
-                onTap: () {
-                  print("News");
-                  BlocProvider.of<NewsBloc>(context).add(
-                      NewsClickOnNewsEvent(
-                          newsData));
-                },
-                child: BigButton(
-                    buttonColor: blue,
-                    textValue: "News Card here",
-                    textColor: Colors.white),
-              ),
-              const SizedBox(
-                height: 50,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Don't have an account? ",
-                    style: regular16pt.copyWith(color: grey),
-                  ),
-                  /* GestureDetector(
-                    onTap: () {
-                      BlocProvider.of<LoginBloc>(context)
-                          .add(LoginToRegisterEvent());
-                    },
-                    child: Text(
-                      'Register',
-                      style: regular16pt.copyWith(color: blue),
-                    ),
-                  ), */
-                ],
+                height: 20,
               ),
             ],
+          ), 
+          Expanded (
+            child:ListView.builder(
+              itemCount: newsData.length,
+              itemBuilder: (context, index) {
+                return Card (
+                  color: Colors.white,
+                  elevation: 0,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Divider(
+                        color: Colors.black,
+                        height: 20,
+                        thickness: 1,
+                        indent: 5,
+                        endIndent: 5,
+                      ),
+                      ListTile(
+                        title: Text(
+                          newsData[index]['title'],
+                          style: const TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                            
+                          ),
+                        ),
+                        subtitle: Text(
+                          newsData[index]['date']+'\n\n'+newsData[index]['content'],
+                          style: const TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

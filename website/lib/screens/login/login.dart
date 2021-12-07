@@ -34,7 +34,6 @@ class _LoginState extends State<Login> {
                 .pushNamedAndRemoveUntil('/home', (route) => false);
           }
           if (state is LoginLogoutState) {
-            print('dispatch');
             BlocProvider.of<LoginBloc>(context).add(LoginWaitingEvent());
           }
         },

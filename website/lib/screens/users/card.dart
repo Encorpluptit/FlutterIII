@@ -21,6 +21,14 @@ class _UserCard extends State<UserCard> {
       return (Card(child: Text('Select a user to see its informations')));
     }
     var user = users[selectedUser];
-    return Card(child: Text(user.uuid));
+    return Card(
+        child: Column(
+      children: <Widget>[
+        SizedBox(),
+        Text("UID: ${user.uuid}\n"),
+        Text("Email: ${user.email}\n"),
+        Text("Role: ${user.role}\n"),
+      ],
+    ));
   }
 }

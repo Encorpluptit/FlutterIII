@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:website/blocs/users/bloc.dart';
 import 'package:website/utils/global.dart' as global;
 
 import 'card.dart';
@@ -9,21 +11,25 @@ class User {
   String _email = "";
   bool _email_verified = false;
   String _creation_date = "";
+  String _role = "User";
 
-  User({required String uuid, required String email}) {
+  User({required String uuid, required String email, required String role}) {
     _uuid = uuid;
     _email = email;
+    _role = role;
   }
 
   User.fromJSON(Map<String, dynamic> result) {
     _uuid = result['uid'];
     _email = result['email'];
+    _role = result['role'];
   }
 
   String get uuid => _uuid;
   String get email => _email;
   bool get emailVerified => _email_verified;
   String get creationDate => _creation_date;
+  String get role => _role;
 }
 
 class UsersListPage extends StatefulWidget {
@@ -34,36 +40,26 @@ class UsersListPage extends StatefulWidget {
 }
 
 class _UsersListPage extends State<UsersListPage> {
-  int selectedUser = -1;
-
-  Future<List<User>> _getUsers() async {
-    final users =
-        FirebaseFirestore.instanceFor(app: global.app).collection("users");
-    final query = await users.get().catchError((error) => print(error));
-    final allData = query.docs.map((doc) => doc.data()).toList();
-    List<User> _list = [];
-
-    for (var i = 0; i != allData.length; i++) {
-      _list.add(User.fromJSON(allData[i]));
-    }
-    return (_list);
-  }
-
-  void setSelected(int number) {
-    setState(() {
-      selectedUser = number;
-    });
+  @override
+  void initState() {
+    BlocProvider.of<UsersBloc>(context).add(UsersLoadEvent());
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: _getUsers(),
-        builder: (context, AsyncSnapshot snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          } else {
-            List<User> _list = snapshot.data;
+    return Scaffold(
+      body: BlocListener<UsersBloc, UsersState>(
+        listener: (context, state) {},
+        child: BlocBuilder<UsersBloc, UsersState>(
+            buildWhen: (UsersState previous, UsersState current) {
+          return (true);
+        }, builder: (context, state) {
+          if (state is UsersWaitingState) {
+            return (Container());
+          }
+          if (state is UsersLoadedSuccessState) {
+            List<User> _list = state.users;
             return Row(children: <Widget>[
               Container(
                   width: MediaQuery.of(context).size.width / 2,
@@ -79,15 +75,21 @@ class _UsersListPage extends State<UsersListPage> {
                     source: _DataSource(
                         rows: _list,
                         context: context,
-                        setSelected: setSelected),
+                        setSelected: (index) =>
+                            BlocProvider.of<UsersBloc>(context)
+                                .add(UsersClickOnDetailsEvent(index))),
                   )),
               Container(
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width / 2,
-                  child: UserCard(users: _list, selectedUser: selectedUser)),
+                  child:
+                      UserCard(users: _list, selectedUser: state.selectedUser)),
             ]);
           }
-        });
+          return (Container());
+        }),
+      ),
+    );
   }
 }
 

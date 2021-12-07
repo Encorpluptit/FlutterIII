@@ -15,6 +15,8 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     on<UsersLoadEvent>((event, emit) async => emit(await _UsersRequest()));
     on<UsersClickOnDetailsEvent>((event, emit) async =>
         emit(await _UsersRequest(selectedUser: event.selectedUser)));
+    on<UsersUpdateEvent>(
+        (event, emit) async => emit(await _UsersUpdate(event.user)));
   }
 
   Future<UsersState> _UsersRequest({int selectedUser = -1}) async {
@@ -28,5 +30,15 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
       _list.add(User.fromJSON(allData[i]));
     }
     return (UsersLoadedSuccessState(_list, selectedUser: selectedUser));
+  }
+
+  Future<UsersState> _UsersUpdate(User user) async {
+    final collection = FirebaseFirestore.instanceFor(app: global.app)
+        .collection("users")
+        .doc(user.uuid);
+    collection.update({
+      "email": user.email,
+    });
+    return (UsersWaitingState());
   }
 }

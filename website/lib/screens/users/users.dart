@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:website/blocs/users/bloc.dart';
-import 'package:website/utils/global.dart' as global;
 
 import 'card.dart';
 
@@ -23,6 +21,10 @@ class User {
     _uuid = result['uid'];
     _email = result['email'];
     _role = result['role'];
+  }
+
+  void set email(String email) {
+    _email = email;
   }
 
   String get uuid => _uuid;
@@ -50,9 +52,16 @@ class _UsersListPage extends State<UsersListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<UsersBloc, UsersState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is UsersWaitingState) {
+            BlocProvider.of<UsersBloc>(context).add(UsersLoadEvent());
+          }
+        },
         child: BlocBuilder<UsersBloc, UsersState>(
             buildWhen: (UsersState previous, UsersState current) {
+          if (current is UsersWaitingState) {
+            return (false);
+          }
           return (true);
         }, builder: (context, state) {
           if (state is UsersWaitingState) {

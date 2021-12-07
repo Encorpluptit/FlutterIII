@@ -16,3 +16,9 @@ class UsersClickOnDetailsEvent extends UsersEvent {
 
   const UsersClickOnDetailsEvent(this.selectedUser);
 }
+
+class UsersUpdateEvent extends UsersEvent {
+  final User user;
+
+  const UsersUpdateEvent(this.user);
+}

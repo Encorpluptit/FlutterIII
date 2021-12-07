@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:website/utils/global.dart' as global;
 
+import 'card.dart';
+
 class User {
   String _uuid = "";
   String _email = "";
@@ -28,22 +30,29 @@ class UsersListPage extends StatefulWidget {
   const UsersListPage({Key? key}) : super(key: key);
 
   @override
-  _FormMaterialState createState() => _FormMaterialState();
+  _UsersListPage createState() => _UsersListPage();
 }
 
-class _FormMaterialState extends State<UsersListPage> {
+class _UsersListPage extends State<UsersListPage> {
+  int selectedUser = -1;
+
   Future<List<User>> _getUsers() async {
     final users =
         FirebaseFirestore.instanceFor(app: global.app).collection("users");
     final query = await users.get().catchError((error) => print(error));
     final allData = query.docs.map((doc) => doc.data()).toList();
-
     List<User> _list = [];
 
     for (var i = 0; i != allData.length; i++) {
       _list.add(User.fromJSON(allData[i]));
     }
     return (_list);
+  }
+
+  void setSelected(int number) {
+    setState(() {
+      selectedUser = number;
+    });
   }
 
   @override
@@ -59,6 +68,7 @@ class _FormMaterialState extends State<UsersListPage> {
               Container(
                   width: MediaQuery.of(context).size.width / 2,
                   child: PaginatedDataTable(
+                    showCheckboxColumn: false,
                     rowsPerPage: 10,
                     columns: [
                       DataColumn(label: Text('UUID')),
@@ -66,12 +76,15 @@ class _FormMaterialState extends State<UsersListPage> {
                       DataColumn(label: Text('Email verified')),
                       DataColumn(label: Text('Account creation date')),
                     ],
-                    source: _DataSource(_list, context),
+                    source: _DataSource(
+                        rows: _list,
+                        context: context,
+                        setSelected: setSelected),
                   )),
               Container(
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width / 2,
-                  child: Card(child: Text('Hello')))
+                  child: UserCard(users: _list, selectedUser: selectedUser)),
             ]);
           }
         });
@@ -79,19 +92,20 @@ class _FormMaterialState extends State<UsersListPage> {
 }
 
 class _DataSource extends DataTableSource {
-  _DataSource(list, this.context) {
-    _rows = list;
-  }
+  _DataSource(
+      {required this.rows, required this.context, required this.setSelected});
 
   final BuildContext context;
-  late List<User> _rows;
+  late List<User> rows;
+  late Function setSelected;
 
   int _selectedCount = 0;
 
   @override
   DataRow getRow(int index) {
-    final row = _rows[index];
+    final row = rows[index];
     return DataRow.byIndex(
+      onSelectChanged: (value) => setSelected(index),
       index: index,
       cells: [
         DataCell(Text(row.uuid)),
@@ -103,7 +117,7 @@ class _DataSource extends DataTableSource {
   }
 
   @override
-  int get rowCount => _rows.length;
+  int get rowCount => rows.length;
 
   @override
   bool get isRowCountApproximate => false;

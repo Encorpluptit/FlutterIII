@@ -55,17 +55,24 @@ class _FormMaterialState extends State<UsersListPage> {
             return Center(child: CircularProgressIndicator());
           } else {
             List<User> _list = snapshot.data;
-            return Container(
-                child: PaginatedDataTable(
-              rowsPerPage: 10,
-              columns: [
-                DataColumn(label: Text('UUID')),
-                DataColumn(label: Text('Email')),
-                DataColumn(label: Text('Email verified')),
-                DataColumn(label: Text('Account creation date')),
-              ],
-              source: _DataSource(_list, context),
-            ));
+            return Row(children: <Widget>[
+              Container(
+                  width: MediaQuery.of(context).size.width / 2,
+                  child: PaginatedDataTable(
+                    rowsPerPage: 10,
+                    columns: [
+                      DataColumn(label: Text('UUID')),
+                      DataColumn(label: Text('Email')),
+                      DataColumn(label: Text('Email verified')),
+                      DataColumn(label: Text('Account creation date')),
+                    ],
+                    source: _DataSource(_list, context),
+                  )),
+              Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width / 2,
+                  child: Card(child: Text('Hello')))
+            ]);
           }
         });
   }

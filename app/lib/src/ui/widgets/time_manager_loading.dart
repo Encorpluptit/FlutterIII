@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timetracking/src/blocs/time_manager/bloc.dart';
 import 'package:timetracking/src/utils/shared_preferences.dart';
+import 'package:geolocator/geolocator.dart';
 
 class TimeManagerLoadingPage extends StatefulWidget {
   const TimeManagerLoadingPage({Key? key}) : super(key: key);
@@ -30,8 +31,13 @@ class _TimeManagerLoadingPageState extends State<TimeManagerLoadingPage> {
           }
         });
       } else {
-        BlocProvider.of<TimeManagerBloc>(context)
-            .add(const TimeManagerLoadGuestEvent());
+        _checkLocation().then((value) {
+          BlocProvider.of<TimeManagerBloc>(context)
+              .add(const TimeManagerLoadErrorEvent("Please login first"));
+        }).catchError((onError) {
+          BlocProvider.of<TimeManagerBloc>(context)
+              .add(TimeManagerLoadErrorEvent(onError.toString()));
+        });
       }
     });
     return Center(
@@ -39,5 +45,26 @@ class _TimeManagerLoadingPageState extends State<TimeManagerLoadingPage> {
         children: const [CircularProgressIndicator(), Text("Loading")],
       ),
     );
+  }
+
+  Future<bool> _checkLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+    return Future.value(true);
   }
 }

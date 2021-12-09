@@ -8,8 +8,8 @@ class TimeManagerBloc extends Bloc<TimeManagerEvent, TimeManagerState> {
   final TimeManagerState initialState;
   TimeManagerBloc([this.initialState = const TimeManagerLoading()])
       : super(initialState) {
-    on<TimeManagerLoadGuestEvent>(
-        (event, emit) => emit(const TimeManagerGuest()));
+    on<TimeManagerLoadErrorEvent>(
+        (event, emit) => emit(TimeManagerError(event.error)));
     on<TimeManagerLoadLoginEvent>((event, emit) async {
       if (event.action == "Clock In") {
         MySharedPreferences().set("CLOCK_STATE", "IN");

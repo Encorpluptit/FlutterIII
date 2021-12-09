@@ -9,8 +9,9 @@ class TimeManagerLoggedIn extends TimeManagerState {
   const TimeManagerLoggedIn(this.action);
 }
 
-class TimeManagerGuest extends TimeManagerState {
-  const TimeManagerGuest();
+class TimeManagerError extends TimeManagerState {
+  final String error;
+  const TimeManagerError(this.error);
 }
 
 class TimeManagerLoading extends TimeManagerState {

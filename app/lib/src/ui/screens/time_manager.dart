@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timetracking/src/blocs/time_manager/bloc.dart';
-import 'package:timetracking/src/ui/widgets/time_manager_guest.dart';
+import 'package:timetracking/src/ui/widgets/time_manager_error.dart';
 import 'package:timetracking/src/ui/widgets/time_manager_loading.dart';
 import 'package:timetracking/src/ui/widgets/time_manager_logged.dart';
 
@@ -24,8 +24,10 @@ class _TimeManagerScreenState extends State<TimeManagerScreen> {
             buildWhen: (TimeManagerState previous, TimeManagerState current) {
           return (true);
         }, builder: (context, state) {
-          if (state is TimeManagerGuest) {
-            return (const TimeManagerGuestPage());
+          if (state is TimeManagerError) {
+            return (TimeManagerErrorPage(
+              error: state.error,
+            ));
           } else if (state is TimeManagerLoggedIn) {
             return (TimeManagerLoggedInPage(
               action: state.action,

@@ -10,8 +10,9 @@ class TimeManagerLoadLoginEvent extends TimeManagerEvent {
   const TimeManagerLoadLoginEvent(this.action);
 }
 
-class TimeManagerLoadGuestEvent extends TimeManagerEvent {
-  const TimeManagerLoadGuestEvent();
+class TimeManagerLoadErrorEvent extends TimeManagerEvent {
+  final String error;
+  const TimeManagerLoadErrorEvent(this.error);
 }
 
 class TimeManagerClockInEvent extends TimeManagerEvent {

@@ -6,9 +6,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:timetracking/src/ui/themes/themes.dart';
 import 'package:timetracking/src/ui/widgets/big_button.dart';
+import 'package:timetracking/src/ui/widgets/modulable_button.dart';
 
 class TimeManagerLoggedInPage extends StatefulWidget {
-  const TimeManagerLoggedInPage({Key? key}) : super(key: key);
+  final String action;
+  const TimeManagerLoggedInPage({Key? key, required this.action})
+      : super(key: key);
 
   @override
   _TimeManagerLoggedInPageState createState() =>
@@ -20,7 +23,9 @@ class _TimeManagerLoggedInPageState extends State<TimeManagerLoggedInPage> {
   @override
   void initState() {
     formattedTime = DateFormat('HH:mm:ss').format(DateTime.now());
-    Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
+    if (mounted) {
+      Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
+    }
     super.initState();
   }
 
@@ -38,7 +43,24 @@ class _TimeManagerLoggedInPageState extends State<TimeManagerLoggedInPage> {
               height: height,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[Text(formattedTime)],
+                children: <Widget>[
+                  Text(formattedTime),
+                  const SizedBox(height: 20),
+                  GestureDetector(
+                    onTap: () {
+                      if (widget.action == "Clock In") {
+                        print("Clock In");
+                      } else {
+                        print("Clock Out");
+                      }
+                    },
+                    child: ModulableButton(
+                      textValue: widget.action,
+                      width: 75,
+                      height: 75,
+                    ),
+                  )
+                ],
               ),
             ),
           ],
@@ -47,15 +69,17 @@ class _TimeManagerLoggedInPageState extends State<TimeManagerLoggedInPage> {
     );
   }
 
+  String _formatDateTime(DateTime dateTime) {
+    return DateFormat('HH:mm:ss').format(dateTime);
+  }
+
   void _getTime() {
     final DateTime now = DateTime.now();
     final String formattedDateTime = _formatDateTime(now);
-    setState(() {
-      formattedTime = formattedDateTime;
-    });
-  }
-
-  String _formatDateTime(DateTime dateTime) {
-    return DateFormat('HH:mm:ss').format(dateTime);
+    if (mounted) {
+      setState(() {
+        formattedTime = formattedDateTime;
+      });
+    }
   }
 }

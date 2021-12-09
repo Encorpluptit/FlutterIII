@@ -56,6 +56,6 @@ class _TimeManagerLoggedInPageState extends State<TimeManagerLoggedInPage> {
   }
 
   String _formatDateTime(DateTime dateTime) {
-    return DateFormat('hh:mm:ss').format(dateTime);
+    return DateFormat('HH:mm:ss').format(dateTime);
   }
 }

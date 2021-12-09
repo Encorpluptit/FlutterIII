@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timetracking/src/blocs/login/bloc.dart';
-import 'package:timetracking/src//utils/global.dart' as global;
+import 'package:timetracking/src/utils/global.dart' as global;
 import 'package:timetracking/src/ui/routes/main_routes.dart';
 import 'package:timetracking/src/utils/shared_preferences.dart';
 

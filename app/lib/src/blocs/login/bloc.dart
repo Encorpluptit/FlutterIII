@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:timetracking/src/utils/shared_preferences.dart';
+import 'package:timetracking/src/utils/global.dart' as global;
 
 part 'event.dart';
 part 'state.dart';
@@ -15,10 +16,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   Future<LoginState> _loginRequest(LoginClickOnLoginEvent event) async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await global.auth.signInWithEmailAndPassword(
           email: event.email, password: event.password);
-      await MySharedPreferences()
-          .set("AUTH", FirebaseAuth.instance.currentUser!.uid);
+      await MySharedPreferences().set("AUTH", global.auth.currentUser!.uid);
       await MySharedPreferences().set("USER_EMAIL", event.email);
       return LoginLoadedSuccess(event.email);
     } on FirebaseAuthException catch (e) {

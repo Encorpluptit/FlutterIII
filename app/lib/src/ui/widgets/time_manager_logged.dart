@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:timetracking/src/blocs/time_manager/bloc.dart';
 import 'package:timetracking/src/ui/widgets/modulable_button.dart';
+import 'package:geolocator/geolocator.dart';
 
 class TimeManagerLoggedInPage extends StatefulWidget {
   final String action;
@@ -46,13 +47,23 @@ class _TimeManagerLoggedInPageState extends State<TimeManagerLoggedInPage> {
                   Text(formattedTime),
                   const SizedBox(height: 20),
                   GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       if (widget.action == "Clock In") {
                         BlocProvider.of<TimeManagerBloc>(context)
-                            .add(TimeManagerClockInEvent(formattedTime));
+                            .add(TimeManagerClockInEvent(
+                          formattedTime,
+                          await Geolocator.getCurrentPosition(
+                            desiredAccuracy: LocationAccuracy.best,
+                          ),
+                        ));
                       } else {
                         BlocProvider.of<TimeManagerBloc>(context)
-                            .add(TimeManagerClockOutEvent(formattedTime));
+                            .add(TimeManagerClockOutEvent(
+                          formattedTime,
+                          await Geolocator.getCurrentPosition(
+                            desiredAccuracy: LocationAccuracy.best,
+                          ),
+                        ));
                       }
                     },
                     child: ModulableButton(

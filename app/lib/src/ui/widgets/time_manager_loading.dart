@@ -14,7 +14,7 @@ class TimeManagerLoadingPage extends StatefulWidget {
 class _TimeManagerLoadingPageState extends State<TimeManagerLoadingPage> {
   @override
   Widget build(BuildContext context) {
-    MySharedPreferences().get("email").then((email) {
+    MySharedPreferences().get("USER_EMAIL").then((email) {
       if (email != null && email.isNotEmpty) {
         MySharedPreferences().get('CLOCK_STATE').then((clockState) {
           if (clockState == "IN") {

@@ -19,7 +19,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           email: event.email, password: event.password);
       await MySharedPreferences()
           .set("AUTH", FirebaseAuth.instance.currentUser!.uid);
-      await MySharedPreferences().set("email", event.email);
+      await MySharedPreferences().set("USER_EMAIL", event.email);
       return LoginLoadedSuccess(event.email);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {

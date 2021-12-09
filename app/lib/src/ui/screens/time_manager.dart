@@ -5,6 +5,7 @@ import 'package:timetracking/src/blocs/time_manager/bloc.dart';
 import 'package:timetracking/src/ui/widgets/time_manager_error.dart';
 import 'package:timetracking/src/ui/widgets/time_manager_loading.dart';
 import 'package:timetracking/src/ui/widgets/time_manager_logged.dart';
+import 'package:timetracking/src/utils/shared_preferences.dart';
 
 class TimeManagerScreen extends StatefulWidget {
   const TimeManagerScreen({Key? key}) : super(key: key);
@@ -19,7 +20,16 @@ class _TimeManagerScreenState extends State<TimeManagerScreen> {
     return Scaffold(
       appBar: AppBar(),
       body: BlocListener<TimeManagerBloc, TimeManagerState>(
-        listener: (context, state) async {},
+        listener: (context, state) async {
+          if (state is TimeManagerError) {
+            final snackBar = SnackBar(
+              duration: const Duration(seconds: 5),
+              content: Text('Error ${state.error}'),
+              backgroundColor: Colors.red,
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
+        },
         child: BlocBuilder<TimeManagerBloc, TimeManagerState>(
             buildWhen: (TimeManagerState previous, TimeManagerState current) {
           return (true);
@@ -31,6 +41,10 @@ class _TimeManagerScreenState extends State<TimeManagerScreen> {
           } else if (state is TimeManagerLoggedIn) {
             return (TimeManagerLoggedInPage(
               action: state.action,
+            ));
+          } else if (state is TimeManagerError) {
+            return (TimeManagerLoggedInPage(
+              action: MySharedPreferences().get("CLOCK_STATE"),
             ));
           } else if (state is TimeManagerLoading) {
             return (const TimeManagerLoadingPage());

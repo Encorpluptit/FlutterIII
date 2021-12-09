@@ -16,13 +16,13 @@ class TimeManagerLoadErrorEvent extends TimeManagerEvent {
 }
 
 class TimeManagerClockInEvent extends TimeManagerEvent {
-  final String time;
+  final DateTime time;
   final Position position;
   const TimeManagerClockInEvent(this.time, this.position);
 }
 
 class TimeManagerClockOutEvent extends TimeManagerEvent {
-  final String time;
+  final DateTime time;
   final Position position;
   const TimeManagerClockOutEvent(this.time, this.position);
 }

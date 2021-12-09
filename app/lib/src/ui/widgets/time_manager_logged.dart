@@ -20,9 +20,11 @@ class TimeManagerLoggedInPage extends StatefulWidget {
 
 class _TimeManagerLoggedInPageState extends State<TimeManagerLoggedInPage> {
   late String formattedTime;
+  late DateTime currentTime;
   @override
   void initState() {
-    formattedTime = DateFormat('HH:mm:ss').format(DateTime.now());
+    currentTime = DateTime.now();
+    _getTime();
     if (mounted) {
       Timer.periodic(const Duration(seconds: 1), (Timer t) => _getTime());
     }
@@ -51,7 +53,7 @@ class _TimeManagerLoggedInPageState extends State<TimeManagerLoggedInPage> {
                       if (widget.action == "Clock In") {
                         BlocProvider.of<TimeManagerBloc>(context)
                             .add(TimeManagerClockInEvent(
-                          formattedTime,
+                          currentTime,
                           await Geolocator.getCurrentPosition(
                             desiredAccuracy: LocationAccuracy.best,
                           ),
@@ -59,7 +61,7 @@ class _TimeManagerLoggedInPageState extends State<TimeManagerLoggedInPage> {
                       } else {
                         BlocProvider.of<TimeManagerBloc>(context)
                             .add(TimeManagerClockOutEvent(
-                          formattedTime,
+                          currentTime,
                           await Geolocator.getCurrentPosition(
                             desiredAccuracy: LocationAccuracy.best,
                           ),
@@ -86,8 +88,8 @@ class _TimeManagerLoggedInPageState extends State<TimeManagerLoggedInPage> {
   }
 
   void _getTime() {
-    final DateTime now = DateTime.now();
-    final String formattedDateTime = _formatDateTime(now);
+    currentTime = DateTime.now();
+    final String formattedDateTime = _formatDateTime(currentTime);
     if (mounted) {
       setState(() {
         formattedTime = formattedDateTime;

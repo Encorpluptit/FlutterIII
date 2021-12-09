@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timetracking/src/blocs/time_manager/bloc.dart';
 import 'package:timetracking/src/utils/shared_preferences.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:timetracking/src/utils/global.dart' as global;
 
 class TimeManagerLoadingPage extends StatefulWidget {
   const TimeManagerLoadingPage({Key? key}) : super(key: key);
@@ -17,18 +18,26 @@ class _TimeManagerLoadingPageState extends State<TimeManagerLoadingPage> {
   Widget build(BuildContext context) {
     MySharedPreferences().get("USER_EMAIL").then((email) {
       if (email != null && email.isNotEmpty) {
-        MySharedPreferences().get('CLOCK_STATE').then((clockState) {
-          if (clockState == "IN") {
-            BlocProvider.of<TimeManagerBloc>(context)
-                .add(const TimeManagerLoadLoginEvent("Clock In"));
-          } else if (clockState == "OUT") {
-            BlocProvider.of<TimeManagerBloc>(context)
-                .add(const TimeManagerLoadLoginEvent("Clock Out"));
-          } else {
-            //TODO Retrieve last action and check if it is clocked in or not
-            BlocProvider.of<TimeManagerBloc>(context)
-                .add(const TimeManagerLoadLoginEvent("Clock In"));
-          }
+        MySharedPreferences().get('CLOCK_STATE').then((clockState) async {
+          final String userId = await MySharedPreferences().get("AUTH");
+          global.store
+              .collection("in_out")
+              .orderBy("created_at", descending: true)
+              .where("user", isEqualTo: "/users/$userId")
+              .limit(1)
+              .get()
+              .then((value) {
+            if (value.docs.isNotEmpty) {
+              var firstElem = value.docs.first;
+              if (firstElem.get("out") != null) {
+                BlocProvider.of<TimeManagerBloc>(context)
+                    .add(const TimeManagerLoadLoginEvent("Clock In"));
+              } else {
+                BlocProvider.of<TimeManagerBloc>(context)
+                    .add(const TimeManagerLoadLoginEvent("Clock Out"));
+              }
+            }
+          });
         });
       } else {
         _checkLocation().then((value) {

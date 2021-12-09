@@ -21,8 +21,3 @@ class NewsLoadedFailure extends NewsState {
 class NewsOnPage extends NewsState {
   const NewsOnPage();
 }
-
-/* class LoginToRegister extends NewsState {
-  const LoginToRegister();
-}
- */

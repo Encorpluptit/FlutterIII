@@ -6,9 +6,20 @@ abstract class TimeManagerEvent {
 }
 
 class TimeManagerLoadLoginEvent extends TimeManagerEvent {
-  const TimeManagerLoadLoginEvent();
+  final String action;
+  const TimeManagerLoadLoginEvent(this.action);
 }
 
 class TimeManagerLoadGuestEvent extends TimeManagerEvent {
   const TimeManagerLoadGuestEvent();
+}
+
+class TimeManagerClockInEvent extends TimeManagerEvent {
+  final String time;
+  const TimeManagerClockInEvent(this.time);
+}
+
+class TimeManagerClockOutEvent extends TimeManagerEvent {
+  final String time;
+  const TimeManagerClockOutEvent(this.time);
 }

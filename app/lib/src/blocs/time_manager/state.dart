@@ -5,7 +5,8 @@ abstract class TimeManagerState {
 }
 
 class TimeManagerLoggedIn extends TimeManagerState {
-  const TimeManagerLoggedIn();
+  final String action;
+  const TimeManagerLoggedIn(this.action);
 }
 
 class TimeManagerGuest extends TimeManagerState {

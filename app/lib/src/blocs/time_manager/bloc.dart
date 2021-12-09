@@ -10,7 +10,27 @@ class TimeManagerBloc extends Bloc<TimeManagerEvent, TimeManagerState> {
       : super(initialState) {
     on<TimeManagerLoadGuestEvent>(
         (event, emit) => emit(const TimeManagerGuest()));
-    on<TimeManagerLoadLoginEvent>(
-        (event, emit) => emit(const TimeManagerLoggedIn()));
+    on<TimeManagerLoadLoginEvent>((event, emit) async {
+      if (event.action == "Clock In") {
+        MySharedPreferences().set("CLOCK_STATE", "IN");
+      } else {
+        MySharedPreferences().set("CLOCK_STATE", "OUT");
+      }
+      emit(TimeManagerLoggedIn(event.action));
+    });
+    on<TimeManagerClockInEvent>(
+        (event, emit) async => emit(await _clockInRequest()));
+    on<TimeManagerClockOutEvent>(
+        (event, emit) async => emit(await _clockOutRequest()));
+  }
+
+  Future<TimeManagerState> _clockInRequest() async {
+    MySharedPreferences().set("CLOCK_STATE", "OUT");
+    return const TimeManagerLoggedIn("Clock Out");
+  }
+
+  Future<TimeManagerState> _clockOutRequest() async {
+    MySharedPreferences().set("CLOCK_STATE", "IN");
+    return const TimeManagerLoggedIn("Clock In");
   }
 }

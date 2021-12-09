@@ -4,8 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:timetracking/src/ui/themes/themes.dart';
-import 'package:timetracking/src/ui/widgets/big_button.dart';
+import 'package:timetracking/src/blocs/time_manager/bloc.dart';
 import 'package:timetracking/src/ui/widgets/modulable_button.dart';
 
 class TimeManagerLoggedInPage extends StatefulWidget {
@@ -49,9 +48,11 @@ class _TimeManagerLoggedInPageState extends State<TimeManagerLoggedInPage> {
                   GestureDetector(
                     onTap: () {
                       if (widget.action == "Clock In") {
-                        print("Clock In");
+                        BlocProvider.of<TimeManagerBloc>(context)
+                            .add(TimeManagerClockInEvent(formattedTime));
                       } else {
-                        print("Clock Out");
+                        BlocProvider.of<TimeManagerBloc>(context)
+                            .add(TimeManagerClockOutEvent(formattedTime));
                       }
                     },
                     child: ModulableButton(

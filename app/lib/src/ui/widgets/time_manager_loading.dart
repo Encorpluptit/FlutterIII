@@ -16,8 +16,19 @@ class _TimeManagerLoadingPageState extends State<TimeManagerLoadingPage> {
   Widget build(BuildContext context) {
     MySharedPreferences().get("email").then((email) {
       if (email != null && email.isNotEmpty) {
-        BlocProvider.of<TimeManagerBloc>(context)
-            .add(const TimeManagerLoadLoginEvent());
+        MySharedPreferences().get('CLOCK_STATE').then((clockState) {
+          if (clockState == "IN") {
+            BlocProvider.of<TimeManagerBloc>(context)
+                .add(const TimeManagerLoadLoginEvent("Clock In"));
+          } else if (clockState == "OUT") {
+            BlocProvider.of<TimeManagerBloc>(context)
+                .add(const TimeManagerLoadLoginEvent("Clock Out"));
+          } else {
+            //TODO Retrieve last action and check if it is clocked in or not
+            BlocProvider.of<TimeManagerBloc>(context)
+                .add(const TimeManagerLoadLoginEvent("Clock In"));
+          }
+        });
       } else {
         BlocProvider.of<TimeManagerBloc>(context)
             .add(const TimeManagerLoadGuestEvent());

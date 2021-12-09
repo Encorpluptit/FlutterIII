@@ -27,8 +27,8 @@ class _TimeManagerScreenState extends State<TimeManagerScreen> {
           if (state is TimeManagerGuest) {
             return (const TimeManagerGuestPage());
           } else if (state is TimeManagerLoggedIn) {
-            return (const TimeManagerLoggedInPage(
-              action: "Clock In",
+            return (TimeManagerLoggedInPage(
+              action: state.action,
             ));
           } else if (state is TimeManagerLoading) {
             return (const TimeManagerLoadingPage());

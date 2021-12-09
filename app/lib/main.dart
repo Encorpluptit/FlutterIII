@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,7 @@ class _AppState extends State<App> {
       // Wait for Firebase to initialize and set `_initialized` state to true
       global.app = await Firebase.initializeApp();
       global.auth = FirebaseAuth.instanceFor(app: global.app);
+      global.store = FirebaseFirestore.instanceFor(app: global.app);
       setState(() {
         _initialized = true;
       });

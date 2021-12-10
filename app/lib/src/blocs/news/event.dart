@@ -10,7 +10,3 @@ class NewsClickOnNewsEvent extends NewsEvent {
 
   const NewsClickOnNewsEvent(this.data);
 }
-
-/* class LoginToRegisterEvent extends NewsEvent {}
-
-class LoginToRegisterDoneEvent extends NewsEvent {} */

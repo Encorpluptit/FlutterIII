@@ -11,6 +11,7 @@ class WorkTime {
   double? _inLongitude;
   double? _outLatitude;
   double? _outLongitude;
+  bool? _requiresApproval;
 
   WorkTime(data, docId) {
     _id = docId;
@@ -23,6 +24,8 @@ class WorkTime {
     _inLongitude = data["in_longitude"];
     _outLatitude = data["out_latitude"];
     _outLongitude = data["out_longitude"];
+    _outLongitude = data["out_longitude"];
+    _requiresApproval = data["requires_approval"];
   }
 
   String? get id => _id;
@@ -35,4 +38,5 @@ class WorkTime {
   double? get inLongitude => _inLongitude;
   double? get outLatitude => _outLatitude;
   double? get outLongitude => _outLongitude;
+  bool? get requiresApproval => _requiresApproval;
 }

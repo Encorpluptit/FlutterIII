@@ -36,6 +36,9 @@ class _TimeManagerLoadingPageState extends State<TimeManagerLoadingPage> {
                 BlocProvider.of<TimeManagerBloc>(context)
                     .add(const TimeManagerLoadLoginEvent("Clock Out"));
               }
+            } else {
+              BlocProvider.of<TimeManagerBloc>(context)
+                  .add(const TimeManagerLoadLoginEvent("Clock In"));
             }
           });
         });

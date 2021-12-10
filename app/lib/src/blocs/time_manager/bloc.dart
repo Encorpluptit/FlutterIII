@@ -43,6 +43,7 @@ class TimeManagerBloc extends Bloc<TimeManagerEvent, TimeManagerState> {
           "in_latitude": event.position.latitude,
           "out_longitude": null,
           "out_latitude": null,
+          "requires_approval": false,
         },
       ).catchError((onError) {
         throw FirebaseException(

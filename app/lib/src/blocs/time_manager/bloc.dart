@@ -32,7 +32,7 @@ class TimeManagerBloc extends Bloc<TimeManagerEvent, TimeManagerState> {
       TimeManagerClockInEvent event) async {
     try {
       CollectionReference inOut = global.store.collection('in_out');
-      inOut.add(
+      await inOut.add(
         {
           "user": "/users/${await MySharedPreferences().get('AUTH')}",
           "created_at": DateTime.now(),
@@ -45,12 +45,7 @@ class TimeManagerBloc extends Bloc<TimeManagerEvent, TimeManagerState> {
           "out_latitude": null,
           "requires_approval": false,
         },
-      ).catchError((onError) {
-        throw FirebaseException(
-          plugin: onError.toString(),
-          message: onError.toString(),
-        );
-      });
+      );
       MySharedPreferences().set("CLOCK_STATE", "OUT");
       return const TimeManagerLoggedIn("Clock Out");
     } on FirebaseException catch (error) {
@@ -64,27 +59,20 @@ class TimeManagerBloc extends Bloc<TimeManagerEvent, TimeManagerState> {
       TimeManagerClockOutEvent event) async {
     try {
       final String userId = await MySharedPreferences().get("AUTH");
-      global.store
+      var resp = await global.store
           .collection("in_out")
           .orderBy("created_at", descending: true)
           .where("user", isEqualTo: "/users/$userId")
           .limit(1)
-          .get()
-          .then((value) {
-        if (value.docs.isNotEmpty) {
-          var firstElem = value.docs.first;
-          global.store.doc("/in_out/${firstElem.id}").update({
-            "out": event.time,
-            "out_longitude": event.position.longitude,
-            "out_latitude": event.position.latitude,
-          }).catchError((onError) {
-            throw FirebaseException(
-              plugin: onError.toString(),
-              message: onError.toString(),
-            );
-          });
-        }
-      });
+          .get();
+      if (resp.docs.isNotEmpty) {
+        var firstElem = resp.docs.first;
+        await global.store.doc("/in_out/${firstElem.id}").update({
+          "out": event.time,
+          "out_longitude": event.position.longitude,
+          "out_latitude": event.position.latitude,
+        });
+      }
       MySharedPreferences().set("CLOCK_STATE", "IN");
       return const TimeManagerLoggedIn("Clock In");
     } on FirebaseException catch (error) {

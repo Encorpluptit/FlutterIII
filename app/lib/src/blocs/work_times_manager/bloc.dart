@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:geolocator/geolocator.dart';
-// import 'package:timetracking/src/utils/shared_preferences.dart';
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:timetracking/src/utils/global.dart' as global;
+import 'package:timetracking/src/models/work_time.dart';
+import 'package:timetracking/src/utils/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:timetracking/src/utils/global.dart' as global;
 part 'event.dart';
 part 'state.dart';
 
@@ -16,6 +16,27 @@ class WorkTimesManagerBloc
     on<WorkTimesManagerLoadErrorEvent>(
         (event, emit) => emit(WorkTimesManagerError(event.error)));
     on<WorkTimesManagerLoadLoginEvent>(
-        (event, emit) => emit(const WorkTimesManagerLoggedIn()));
+        (event, emit) async => emit(await _workTimesManagerRequest(event)));
+  }
+
+  Future<WorkTimesManagerState> _workTimesManagerRequest(
+      WorkTimesManagerEvent event) async {
+    try {
+      final String userId = await MySharedPreferences().get("AUTH");
+      List<WorkTime> workTimes = [];
+      var resp = await global.store
+          .collection("in_out")
+          .orderBy("created_at", descending: true)
+          .where("user", isEqualTo: "/users/$userId")
+          .get();
+      for (var element in resp.docs) {
+        workTimes.add(WorkTime(element.data(), element.id));
+      }
+      return WorkTimesManagerLoggedIn(workTimes);
+    } on FirebaseException catch (error) {
+      return WorkTimesManagerError(error.message!);
+    } on Exception catch (error) {
+      return WorkTimesManagerError(error.toString());
+    }
   }
 }

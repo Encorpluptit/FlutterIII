@@ -5,7 +5,8 @@ abstract class WorkTimesManagerState {
 }
 
 class WorkTimesManagerLoggedIn extends WorkTimesManagerState {
-  const WorkTimesManagerLoggedIn();
+  final List<WorkTime> workTimes;
+  const WorkTimesManagerLoggedIn(this.workTimes);
 }
 
 class WorkTimesManagerError extends WorkTimesManagerState {

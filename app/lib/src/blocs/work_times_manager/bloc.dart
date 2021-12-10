@@ -29,8 +29,10 @@ class WorkTimesManagerBloc
           .orderBy("created_at", descending: true)
           .where("user", isEqualTo: "/users/$userId")
           .get();
-      for (var element in resp.docs) {
-        workTimes.add(WorkTime(element.data(), element.id));
+      if (resp.docs.isNotEmpty) {
+        for (var element in resp.docs) {
+          workTimes.add(WorkTime(element.data(), element.id));
+        }
       }
       return WorkTimesManagerLoggedIn(workTimes);
     } on FirebaseException catch (error) {

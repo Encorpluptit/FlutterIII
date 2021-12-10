@@ -1,14 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class WorkTime {
-  String _id = "";
-  String _user = "";
-  DateTime _createdAt = DateTime.now();
-  DateTime _updatedAt = DateTime.now();
-  DateTime _in = DateTime.now();
-  DateTime _out = DateTime.now();
-  double _inLatitude = 0;
-  double _inLongitude = 0;
-  double _outLatitude = 0;
-  double _outLongitude = 0;
+  String? _id;
+  String? _user;
+  Timestamp? _createdAt;
+  Timestamp? _updatedAt;
+  Timestamp? _in;
+  Timestamp? _out;
+  double? _inLatitude;
+  double? _inLongitude;
+  double? _outLatitude;
+  double? _outLongitude;
 
   WorkTime(data, docId) {
     _id = docId;
@@ -23,14 +25,14 @@ class WorkTime {
     _outLongitude = data["out_longitude"];
   }
 
-  String get id => _id;
-  String get user => _user;
-  DateTime get createdAt => _createdAt;
-  DateTime get updatedAt => _updatedAt;
-  DateTime get in_ => _in;
-  DateTime get out => _out;
-  double get inLatitude => _inLatitude;
-  double get inLongitude => _inLongitude;
-  double get outLatitude => _outLatitude;
-  double get outLongitude => _outLongitude;
+  String? get id => _id;
+  String? get user => _user;
+  Timestamp? get createdAt => _createdAt;
+  Timestamp? get updatedAt => _updatedAt;
+  Timestamp? get in_ => _in;
+  Timestamp? get out => _out;
+  double? get inLatitude => _inLatitude;
+  double? get inLongitude => _inLongitude;
+  double? get outLatitude => _outLatitude;
+  double? get outLongitude => _outLongitude;
 }

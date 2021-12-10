@@ -20,16 +20,7 @@ class _WorkTimesManagerScreenState extends State<WorkTimesManagerScreen> {
     return Scaffold(
       appBar: AppBar(),
       body: BlocListener<WorkTimesManagerBloc, WorkTimesManagerState>(
-        listener: (context, state) async {
-          if (state is WorkTimesManagerError) {
-            final snackBar = SnackBar(
-              duration: const Duration(seconds: 5),
-              content: Text('Error ${state.error}'),
-              backgroundColor: Colors.red,
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
-        },
+        listener: (context, state) async {},
         child: BlocBuilder<WorkTimesManagerBloc, WorkTimesManagerState>(
             buildWhen: (WorkTimesManagerState previous,
                 WorkTimesManagerState current) {
@@ -39,9 +30,8 @@ class _WorkTimesManagerScreenState extends State<WorkTimesManagerScreen> {
             return (WorkTimesManagerErrorPage(
               error: state.error,
             ));
-          } else if (state is WorkTimesManagerLoggedIn ||
-              state is WorkTimesManagerError) {
-            return (const WorkTimesManagerLoggedInPage());
+          } else if (state is WorkTimesManagerLoggedIn) {
+            return (WorkTimesManagerLoggedInPage(workTimes: state.workTimes));
           } else if (state is WorkTimesManagerLoading) {
             return (const WorkTimesManagerLoadingPage());
           } else {

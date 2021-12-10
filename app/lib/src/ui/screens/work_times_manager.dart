@@ -5,7 +5,6 @@ import 'package:timetracking/src/blocs/work_times_manager/bloc.dart';
 import 'package:timetracking/src/ui/widgets/work_times_manager_error.dart';
 import 'package:timetracking/src/ui/widgets/work_times_manager_loading.dart';
 import 'package:timetracking/src/ui/widgets/work_times_manager_logged.dart';
-import 'package:timetracking/src/utils/shared_preferences.dart';
 
 class WorkTimesManagerScreen extends StatefulWidget {
   const WorkTimesManagerScreen({Key? key}) : super(key: key);

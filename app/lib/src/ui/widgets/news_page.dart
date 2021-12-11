@@ -35,45 +35,47 @@ class _NewsPageState extends State<NewsPage> {
                 height: 20,
               ),
             ],
-          ), 
-          Expanded (
-            child:ListView.builder(
-              itemCount: widget.newsData.length,
-              itemBuilder: (context, index) {
-                return Card (
-                  color: Colors.white,
-                  elevation: 0,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Divider(
-                        color: Colors.black,
-                        height: 20,
-                        thickness: 1,
-                        indent: 5,
-                        endIndent: 5,
-                      ),
-                      ListTile(
-                        title: Text(
-                          widget.newsData[index].title,
-                          style: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.black,
-                            
+          ),
+          Expanded(
+            child: ListView.builder(
+                itemCount: widget.newsData.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: Colors.white,
+                    elevation: 0,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Divider(
+                          color: Colors.black,
+                          height: 20,
+                          thickness: 1,
+                          indent: 5,
+                          endIndent: 5,
+                        ),
+                        ListTile(
+                          title: Text(
+                            widget.newsData[index].title!,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.black,
+                            ),
+                          ),
+                          subtitle: Text(
+                            DateFormat('dd/MM/yyy – HH:mm').format(widget
+                                    .newsData[index].createdAt!
+                                    .toDate()) +
+                                '\n\n' +
+                                widget.newsData[index].content!,
+                            style: const TextStyle(
+                              color: Colors.black,
+                            ),
                           ),
                         ),
-                        subtitle: Text(
-                          DateFormat('dd/MM/yyy – HH:mm').format(widget.newsData[index].createdAt!.toDate()) +'\n\n'+ widget.newsData[index].content,
-                          style: const TextStyle(
-                            color: Colors.black,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              }
-            ),
+                      ],
+                    ),
+                  );
+                }),
           ),
         ],
       ),

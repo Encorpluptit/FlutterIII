@@ -14,6 +14,11 @@ class WorkTimesManagerLoadErrorEvent extends WorkTimesManagerEvent {
   const WorkTimesManagerLoadErrorEvent(this.error);
 }
 
+class WorkTimesManagerDeleteEvent extends WorkTimesManagerEvent {
+  final String id;
+  const WorkTimesManagerDeleteEvent(this.id);
+}
+
 class WorkTimesManagerReloadEvent extends WorkTimesManagerEvent {
   const WorkTimesManagerReloadEvent();
 }

@@ -14,14 +14,8 @@ class TimeManagerBloc extends Bloc<TimeManagerEvent, TimeManagerState> {
       : super(initialState) {
     on<TimeManagerLoadErrorEvent>(
         (event, emit) => emit(TimeManagerError(event.error)));
-    on<TimeManagerLoadLoginEvent>((event, emit) async {
-      if (event.action == "Clock In") {
-        MySharedPreferences().set("CLOCK_STATE", "IN");
-      } else {
-        MySharedPreferences().set("CLOCK_STATE", "OUT");
-      }
-      emit(TimeManagerLoggedIn(event.action));
-    });
+    on<TimeManagerLoadLoginEvent>(
+        (event, emit) => emit(TimeManagerLoggedIn(event.action)));
     on<TimeManagerClockInEvent>(
         (event, emit) async => emit(await _clockInRequest(event)));
     on<TimeManagerClockOutEvent>(
@@ -73,7 +67,6 @@ class TimeManagerBloc extends Bloc<TimeManagerEvent, TimeManagerState> {
           "requires_approval": false,
         },
       );
-      MySharedPreferences().set("CLOCK_STATE", "OUT");
       return const TimeManagerLoggedIn("Clock Out");
     } on FirebaseException catch (error) {
       return TimeManagerError(error.message!);
@@ -100,7 +93,6 @@ class TimeManagerBloc extends Bloc<TimeManagerEvent, TimeManagerState> {
           "out_latitude": event.position.latitude,
         });
       }
-      MySharedPreferences().set("CLOCK_STATE", "IN");
       return const TimeManagerLoggedIn("Clock In");
     } on FirebaseException catch (error) {
       return TimeManagerError(error.message!);

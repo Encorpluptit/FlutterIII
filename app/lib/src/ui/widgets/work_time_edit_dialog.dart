@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timetracking/src/models/work_time.dart';
 
+// ignore: must_be_immutable
 class WorkTimeEditDialog extends StatefulWidget {
   final WorkTime workTime;
   final Function(DateTime in_, DateTime? out) onSave;

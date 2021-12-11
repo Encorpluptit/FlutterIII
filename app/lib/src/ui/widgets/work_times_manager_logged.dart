@@ -42,6 +42,10 @@ class _WorkTimesManagerLoggedInPageState
                   BlocProvider.of<WorkTimesManagerBloc>(context)
                       .add(WorkTimesManagerDeleteEvent(workTime.id!));
                 },
+                onSave: (_in, out) {
+                  BlocProvider.of<WorkTimesManagerBloc>(context)
+                      .add(WorkTimesManagerUpdateEvent(workTime.id!, _in, out));
+                },
               );
             }).toList(),
           ),

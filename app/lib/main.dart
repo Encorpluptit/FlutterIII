@@ -80,6 +80,10 @@ class _AppState extends State<App> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return MaterialApp(
+            builder: (context, child) => MediaQuery(
+                data: MediaQuery.of(context)
+                    .copyWith(alwaysUse24HourFormat: true),
+                child: child!),
             initialRoute: (snapshot.data == true ? '/home' : '/'),
             title: 'TimeTracking',
             theme: ThemeData(

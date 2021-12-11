@@ -17,6 +17,8 @@ class WorkTimesManagerBloc
         (event, emit) => emit(WorkTimesManagerError(event.error)));
     on<WorkTimesManagerLoadLoginEvent>(
         (event, emit) async => emit(await _workTimesManagerRequest(event)));
+    on<WorkTimesManagerDeleteEvent>((event, emit) async =>
+        emit(await _workTimesManagerDeleteRequest(event)));
     on<WorkTimesManagerReloadEvent>(
         (event, emit) async => emit(const WorkTimesManagerLoading()));
   }
@@ -37,6 +39,18 @@ class WorkTimesManagerBloc
         }
       }
       return WorkTimesManagerLoggedIn(workTimes);
+    } on FirebaseException catch (error) {
+      return WorkTimesManagerError(error.message!);
+    } on Exception catch (error) {
+      return WorkTimesManagerError(error.toString());
+    }
+  }
+
+  Future<WorkTimesManagerState> _workTimesManagerDeleteRequest(
+      WorkTimesManagerDeleteEvent event) async {
+    try {
+      global.store.collection("in_out").doc(event.id).delete();
+      return const WorkTimesManagerLoading();
     } on FirebaseException catch (error) {
       return WorkTimesManagerError(error.message!);
     } on Exception catch (error) {

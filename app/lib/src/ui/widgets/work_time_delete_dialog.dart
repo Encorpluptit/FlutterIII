@@ -4,8 +4,12 @@ import 'package:timetracking/src/models/work_time.dart';
 
 class WorkTimeDeleteDialog extends StatelessWidget {
   final WorkTime workTime;
-  const WorkTimeDeleteDialog({Key? key, required this.workTime})
-      : super(key: key);
+  final VoidCallback onDeletePressed;
+  const WorkTimeDeleteDialog({
+    Key? key,
+    required this.workTime,
+    required this.onDeletePressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +19,12 @@ class WorkTimeDeleteDialog extends StatelessWidget {
       actions: <Widget>[
         TextButton(
             onPressed: () {
+              onDeletePressed();
               _dismissDialog(context);
             },
             child: const Text('Delete')),
         TextButton(
-          onPressed: () {
+          onPressed: () async {
             _dismissDialog(context);
           },
           child: const Text('Cancel'),

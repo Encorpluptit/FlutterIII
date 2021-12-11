@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:timetracking/src/blocs/work_times_manager/bloc.dart';
 import 'package:timetracking/src/models/work_time.dart';
 import 'package:timetracking/src/ui/widgets/work_time_card.dart';
 
@@ -31,7 +33,13 @@ class _WorkTimesManagerLoggedInPageState
         child: Center(
           child: Column(
             children: widget.workTimes.map<Widget>((workTime) {
-              return WorkTimeCard(workTime: workTime);
+              return WorkTimeCard(
+                workTime: workTime,
+                onDeletePressed: () {
+                  BlocProvider.of<WorkTimesManagerBloc>(context)
+                      .add(WorkTimesManagerDeleteEvent(workTime.id!));
+                },
+              );
             }).toList(),
           ),
         ),

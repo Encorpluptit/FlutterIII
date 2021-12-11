@@ -7,7 +7,10 @@ import 'package:timetracking/src/ui/widgets/work_time_edit_dialog.dart';
 
 class WorkTimeCard extends StatelessWidget {
   final WorkTime workTime;
-  const WorkTimeCard({Key? key, required this.workTime}) : super(key: key);
+  final VoidCallback onDeletePressed;
+  const WorkTimeCard(
+      {Key? key, required this.workTime, required this.onDeletePressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +82,10 @@ class WorkTimeCard extends StatelessWidget {
                           showDialog(
                             context: context,
                             builder: (context) {
-                              return WorkTimeDeleteDialog(workTime: workTime);
+                              return WorkTimeDeleteDialog(
+                                workTime: workTime,
+                                onDeletePressed: () => onDeletePressed(),
+                              );
                             },
                           );
                         },

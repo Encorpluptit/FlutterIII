@@ -30,7 +30,13 @@ class _WorkTimesManagerScreenState extends State<WorkTimesManagerScreen> {
               error: state.error,
             ));
           } else if (state is WorkTimesManagerLoggedIn) {
-            return (WorkTimesManagerLoggedInPage(workTimes: state.workTimes));
+            return (RefreshIndicator(
+                onRefresh: () async {
+                  BlocProvider.of<WorkTimesManagerBloc>(context)
+                      .add(const WorkTimesManagerLoadLoginEvent());
+                },
+                child:
+                    WorkTimesManagerLoggedInPage(workTimes: state.workTimes)));
           } else if (state is WorkTimesManagerLoading) {
             return (const WorkTimesManagerLoadingPage());
           } else {

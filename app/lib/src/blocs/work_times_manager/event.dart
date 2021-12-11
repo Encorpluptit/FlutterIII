@@ -13,3 +13,7 @@ class WorkTimesManagerLoadErrorEvent extends WorkTimesManagerEvent {
   final String error;
   const WorkTimesManagerLoadErrorEvent(this.error);
 }
+
+class WorkTimesManagerReloadEvent extends WorkTimesManagerEvent {
+  const WorkTimesManagerReloadEvent();
+}

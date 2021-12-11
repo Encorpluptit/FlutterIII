@@ -17,6 +17,8 @@ class WorkTimesManagerBloc
         (event, emit) => emit(WorkTimesManagerError(event.error)));
     on<WorkTimesManagerLoadLoginEvent>(
         (event, emit) async => emit(await _workTimesManagerRequest(event)));
+    on<WorkTimesManagerReloadEvent>(
+        (event, emit) async => emit(const WorkTimesManagerLoading()));
   }
 
   Future<WorkTimesManagerState> _workTimesManagerRequest(

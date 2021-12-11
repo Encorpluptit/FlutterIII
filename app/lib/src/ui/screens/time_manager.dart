@@ -35,17 +35,23 @@ class _TimeManagerScreenState extends State<TimeManagerScreen> {
           return (true);
         }, builder: (context, state) {
           if (state is TimeManagerError) {
-            return (TimeManagerErrorPage(
-              error: state.error,
-            ));
+            return (RefreshIndicator(
+                onRefresh: () async {
+                  BlocProvider.of<TimeManagerBloc>(context)
+                      .add(const TimeManagerReloadEvent());
+                },
+                child: TimeManagerErrorPage(
+                  error: state.error,
+                )));
           } else if (state is TimeManagerLoggedIn) {
-            return (TimeManagerLoggedInPage(
-              action: state.action,
-            ));
-          } else if (state is TimeManagerError) {
-            return (TimeManagerLoggedInPage(
-              action: MySharedPreferences().get("CLOCK_STATE"),
-            ));
+            return (RefreshIndicator(
+                onRefresh: () async {
+                  BlocProvider.of<TimeManagerBloc>(context)
+                      .add(const TimeManagerReloadEvent());
+                },
+                child: TimeManagerLoggedInPage(
+                  action: state.action,
+                )));
           } else if (state is TimeManagerLoading) {
             return (const TimeManagerLoadingPage());
           } else {

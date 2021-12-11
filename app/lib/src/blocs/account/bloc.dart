@@ -16,7 +16,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
 
   Future<AccountState> _logoutRequest() async {
     await MySharedPreferences().unset("AUTH");
-    await MySharedPreferences().unset("email");
+    await MySharedPreferences().unset("USER_EMAIL");
     return const AccountGuest();
   }
 }

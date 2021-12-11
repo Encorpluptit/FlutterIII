@@ -17,31 +17,39 @@ class _TimeManagerLoadingPageState extends State<TimeManagerLoadingPage> {
   @override
   Widget build(BuildContext context) {
     MySharedPreferences().get("USER_EMAIL").then((email) {
+      bool permission = true;
       if (email != null && email.isNotEmpty) {
-        MySharedPreferences().get('CLOCK_STATE').then((clockState) async {
-          final String userId = await MySharedPreferences().get("AUTH");
-          global.store
-              .collection("in_out")
-              .orderBy("created_at", descending: true)
-              .where("user", isEqualTo: "/users/$userId")
-              .limit(1)
-              .get()
-              .then((value) {
-            if (value.docs.isNotEmpty) {
-              var firstElem = value.docs.first;
-              if (firstElem.get("out") != null) {
-                BlocProvider.of<TimeManagerBloc>(context)
-                    .add(const TimeManagerLoadLoginEvent("Clock In"));
+        _checkLocation().catchError((onError) {
+          permission = false;
+          BlocProvider.of<TimeManagerBloc>(context)
+              .add(TimeManagerLoadErrorEvent(onError.toString()));
+        });
+        if (permission) {
+          MySharedPreferences().get('CLOCK_STATE').then((clockState) async {
+            final String userId = await MySharedPreferences().get("AUTH");
+            global.store
+                .collection("in_out")
+                .orderBy("created_at", descending: true)
+                .where("user", isEqualTo: "/users/$userId")
+                .limit(1)
+                .get()
+                .then((value) {
+              if (value.docs.isNotEmpty) {
+                var firstElem = value.docs.first;
+                if (firstElem.get("out") != null) {
+                  BlocProvider.of<TimeManagerBloc>(context)
+                      .add(const TimeManagerLoadLoginEvent("Clock In"));
+                } else {
+                  BlocProvider.of<TimeManagerBloc>(context)
+                      .add(const TimeManagerLoadLoginEvent("Clock Out"));
+                }
               } else {
                 BlocProvider.of<TimeManagerBloc>(context)
-                    .add(const TimeManagerLoadLoginEvent("Clock Out"));
+                    .add(const TimeManagerLoadLoginEvent("Clock In"));
               }
-            } else {
-              BlocProvider.of<TimeManagerBloc>(context)
-                  .add(const TimeManagerLoadLoginEvent("Clock In"));
-            }
+            });
           });
-        });
+        }
       } else {
         _checkLocation().then((value) {
           BlocProvider.of<TimeManagerBloc>(context)

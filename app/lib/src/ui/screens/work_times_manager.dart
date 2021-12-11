@@ -26,8 +26,12 @@ class _WorkTimesManagerScreenState extends State<WorkTimesManagerScreen> {
           return (true);
         }, builder: (context, state) {
           if (state is WorkTimesManagerError) {
-            return (WorkTimesManagerErrorPage(
-              error: state.error,
+            return (RefreshIndicator(
+              onRefresh: () async {
+                BlocProvider.of<WorkTimesManagerBloc>(context)
+                    .add(const WorkTimesManagerReloadEvent());
+              },
+              child: WorkTimesManagerErrorPage(error: state.error),
             ));
           } else if (state is WorkTimesManagerLoggedIn) {
             return (RefreshIndicator(

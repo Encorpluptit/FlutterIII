@@ -4,6 +4,11 @@ abstract class NewsState {
   const NewsState();
 }
 
+class NewsLoggedIn extends NewsState {
+  final List<NewsData> newsData;
+  const NewsLoggedIn(this.newsData);
+}
+
 class NewsLoading extends NewsState {
   const NewsLoading();
 }
@@ -13,9 +18,9 @@ class NewsLoadedSuccess extends NewsState {
 }
 
 class NewsLoadedFailure extends NewsState {
-  String cause = "";
+  String error = "";
 
-  NewsLoadedFailure(this.cause);
+  NewsLoadedFailure(this.error);
 }
 
 class NewsOnPage extends NewsState {

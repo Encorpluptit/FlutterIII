@@ -1,6 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:timetracking/src/models/work_time.dart';
+import 'package:timetracking/src/ui/widgets/work_time_delete_dialog.dart';
+import 'package:timetracking/src/ui/widgets/work_time_edit_dialog.dart';
 
 class WorkTimeCard extends StatelessWidget {
   final WorkTime workTime;
@@ -53,6 +56,36 @@ class WorkTimeCard extends StatelessWidget {
                   Text(
                     approval,
                     style: approvalStyle,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return WorkTimeEditDialog(workTime: workTime);
+                            },
+                          );
+                        },
+                        child: const Text("Edit"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return WorkTimeDeleteDialog(workTime: workTime);
+                            },
+                          );
+                        },
+                        child: const Text("Delete"),
+                      ),
+                    ],
                   ),
                 ],
               ),

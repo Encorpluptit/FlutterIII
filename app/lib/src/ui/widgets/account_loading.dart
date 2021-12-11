@@ -14,7 +14,7 @@ class AccountLoadingPage extends StatefulWidget {
 class _AccountLoadingPageState extends State<AccountLoadingPage> {
   @override
   Widget build(BuildContext context) {
-    MySharedPreferences().get("email").then((email) {
+    MySharedPreferences().get("USER_EMAIL").then((email) {
       if (email != null && email.isNotEmpty) {
         BlocProvider.of<AccountBloc>(context).add(AccountLoginEvent(email));
       } else {

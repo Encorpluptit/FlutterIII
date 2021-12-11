@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:timetracking/src/utils/global.dart' as global;
 
 part 'event.dart';
 part 'state.dart';
@@ -14,7 +15,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   Future<RegisterState> _registerRequest(
       RegisterClickOnRegisterEvent event) async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      await global.auth.createUserWithEmailAndPassword(
           email: event.email, password: event.password);
       return const RegisterLoadedSuccess();
     } on FirebaseAuthException catch (e) {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timetracking/src/blocs/account/bloc.dart';
+import 'package:timetracking/src/blocs/news/bloc.dart';
 import 'package:timetracking/src/ui/screens/account.dart';
+import 'package:timetracking/src/ui/screens/news.dart';
 
 class NavigationRouteInterface {
   final Icon icon;
@@ -11,6 +13,13 @@ class NavigationRouteInterface {
 }
 
 List<NavigationRouteInterface> navigationRoutes = [
+  NavigationRouteInterface(
+      const Icon(Icons.person),
+      "Clock in & out",
+      BlocProvider(
+        create: (_) => NewsBloc(),
+        child: const NewsScreen(),
+      )),
   NavigationRouteInterface(
       const Icon(Icons.person),
       "Account",

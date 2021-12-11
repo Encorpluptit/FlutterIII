@@ -17,52 +17,47 @@ class AccountLoggedInPage extends StatefulWidget {
 class _AccountLoggedInPageState extends State<AccountLoggedInPage> {
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-
     return Scaffold(
-      body: SingleChildScrollView(
-          child: Padding(
-        padding: const EdgeInsets.fromLTRB(24.0, 40.0, 24.0, 0),
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              width: double.infinity,
-              height: height,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  const Icon(
-                    Icons.account_circle,
-                    size: 150,
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  Text(
-                    widget.email,
-                    style: TextStyle(
-                      fontSize: 22.0,
-                      color: blue,
+      body: Padding(
+          padding: const EdgeInsets.fromLTRB(24.0, 40.0, 24.0, 0),
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    const Icon(
+                      Icons.account_circle,
+                      size: 150,
                     ),
-                  ),
-                  const SizedBox(height: 50),
-                  GestureDetector(
-                      onTap: () {
-                        BlocProvider.of<AccountBloc>(context)
-                            .add(const AccountLogoutEvent());
-                      },
-                      child: SizedBox(
-                        child: BigButton(
-                            buttonColor: blue,
-                            textValue: "Logout",
-                            textColor: Colors.white),
-                      )),
-                ],
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Text(
+                      widget.email,
+                      style: TextStyle(
+                        fontSize: 22.0,
+                        color: blue,
+                      ),
+                    ),
+                    const SizedBox(height: 50),
+                    GestureDetector(
+                        onTap: () {
+                          BlocProvider.of<AccountBloc>(context)
+                              .add(const AccountLogoutEvent());
+                        },
+                        child: SizedBox(
+                          child: BigButton(
+                              buttonColor: blue,
+                              textValue: "Logout",
+                              textColor: Colors.white),
+                        )),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      )),
+            ],
+          )),
     );
   }
 }

@@ -5,8 +5,15 @@ abstract class NewsEvent {
   const NewsEvent();
 }
 
-class NewsClickOnNewsEvent extends NewsEvent {
-  final String data;
+/* class NewsLoadLoginEvent extends NewsEvent {
+  const NewsLoadLoginEvent();
+} */
 
-  const NewsClickOnNewsEvent(this.data);
+class NewsLoadErrorEvent extends NewsEvent {
+  final String error;
+  const NewsLoadErrorEvent(this.error);
+}
+
+class NewsLoadEvent extends NewsEvent {
+  const NewsLoadEvent();
 }

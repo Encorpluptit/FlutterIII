@@ -5,6 +5,8 @@ import 'package:timetracking/src/blocs/news/bloc.dart';
 /* import 'package:timetracking/src/blocs/register/register_bloc.dart'; */
 /* import 'package:timetracking/src/ui/screens/register.dart'; */
 import 'package:timetracking/src/ui/widgets/news_page.dart';
+import 'package:timetracking/src/ui/widgets/news_error.dart';
+import 'package:timetracking/src/ui/widgets/news_loading.dart';
 
 class NewsScreen extends StatefulWidget {
   const NewsScreen({Key? key}) : super(key: key);
@@ -19,39 +21,34 @@ class _NewsScreenState extends State<NewsScreen> {
     return Scaffold(
       appBar: AppBar(),
       body: BlocListener<NewsBloc, NewsState>(
-        listener: (context, state) {
-          if (state is NewsLoadedFailure) {
-            const snackBar = SnackBar(
-              duration: Duration(minutes: 5),
-              content: Text('Error loadind news.'),
+        listener: (context, state) async {
+          print("listener");
+          print(state);
+          /* if (state is NewsLoadedFailure) {
+            final snackBar = SnackBar(
+              duration: const Duration(seconds: 5),
+              content: Text('Error ${state.error}'),
               backgroundColor: Colors.red,
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          }
-         /*  if (state is LoginToRegister) {
-            // print("LoginToRegisterOK");
-            BlocProvider.of<LoginBloc>(context).add(LoginToRegisterDoneEvent());
-            Navigator.pushReplacement(
-                context,
-                CupertinoPageRoute(
-                    builder: (context) => BlocProvider(
-                          create: (_) => RegisterBloc(),
-                          child: const RegisterScreen(),
-                        )));
           } */
         },
         child: BlocBuilder<NewsBloc, NewsState>(
             buildWhen: (NewsState previous, NewsState current) {
           return (true);
         }, builder: (context, state) {
-          if (state is NewsOnPage) {
-            return (const NewsPage());
-          } else if (state is NewsLoading) {
-            return (const Center(
-              child: CircularProgressIndicator(),
+          print("builder");
+          print(state);
+          if (state is NewsLoadedFailure) {
+            return (NewsErrorPage(
+              error: state.error,
             ));
-          } else if (state is NewsLoadedFailure) {
-            return (Container());
+          } else if (state is NewsLoggedIn) {
+            return (NewsPage(
+              newsData: state.newsData,
+            ));
+          } else if (state is NewsLoading) {
+            return (const NewsLoadingPage());
           } else {
             return (Container());
           }

@@ -1,30 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timetracking/src/blocs/news/bloc.dart';
 import 'package:timetracking/src/ui/themes/themes.dart';
-import 'package:timetracking/src/ui/widgets/big_button.dart';
+import 'package:timetracking/src/models/news.dart';
 
 class NewsPage extends StatefulWidget {
-  const NewsPage({Key? key}) : super(key: key);
+  final List<NewsData> newsData;
+  const NewsPage({Key? key, required this.newsData}) : super(key: key);
 
   @override
   _NewsPageState createState() => _NewsPageState();
 }
 
 class _NewsPageState extends State<NewsPage> {
-  List<Map<String, dynamic>> newsData = [
-    {"title": "HelloJPNFEPKJNVJPENVJENZEVIJNEIVN", "content": "helloeOKFEOIJFOIEJFIOEJFOIJSFJSIPJFE9ESJSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS","groups": ["Manager", "User"],"date": "13/07/2021"},
-    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"},
-    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"},
-    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"},
-    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"},
-    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"},
-    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"},
-    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"},
-    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"},
-    {"title": "Hello", "content": "hello","groups": ["Manager", "User"],"date": "13/07/2021"}
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +38,7 @@ class _NewsPageState extends State<NewsPage> {
           ), 
           Expanded (
             child:ListView.builder(
-              itemCount: newsData.length,
+              itemCount: widget.newsData.length,
               itemBuilder: (context, index) {
                 return Card (
                   color: Colors.white,
@@ -66,7 +55,7 @@ class _NewsPageState extends State<NewsPage> {
                       ),
                       ListTile(
                         title: Text(
-                          newsData[index]['title'],
+                          widget.newsData[index].title,
                           style: const TextStyle(
                             fontSize: 20,
                             color: Colors.black,
@@ -74,7 +63,7 @@ class _NewsPageState extends State<NewsPage> {
                           ),
                         ),
                         subtitle: Text(
-                          newsData[index]['date']+'\n\n'+newsData[index]['content'],
+                          DateFormat('dd/MM/yyy – HH:mm').format(widget.newsData[index].createdAt!.toDate()) +'\n\n'+ widget.newsData[index].content,
                           style: const TextStyle(
                             color: Colors.black,
                           ),

@@ -5,7 +5,6 @@ import 'package:timetracking/src/blocs/time_manager/bloc.dart';
 import 'package:timetracking/src/ui/widgets/time_manager_error.dart';
 import 'package:timetracking/src/ui/widgets/time_manager_loading.dart';
 import 'package:timetracking/src/ui/widgets/time_manager_logged.dart';
-import 'package:timetracking/src/utils/shared_preferences.dart';
 
 class TimeManagerScreen extends StatefulWidget {
   const TimeManagerScreen({Key? key}) : super(key: key);

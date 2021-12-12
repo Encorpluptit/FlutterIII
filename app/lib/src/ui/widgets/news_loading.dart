@@ -8,25 +8,18 @@ class NewsLoadingPage extends StatefulWidget {
   const NewsLoadingPage({Key? key}) : super(key: key);
 
   @override
-  _NewsLoadingPageState createState() =>
-      _NewsLoadingPageState();
+  _NewsLoadingPageState createState() => _NewsLoadingPageState();
 }
 
-class _NewsLoadingPageState
-    extends State<NewsLoadingPage> {
+class _NewsLoadingPageState extends State<NewsLoadingPage> {
   @override
   Widget build(BuildContext context) {
     MySharedPreferences().get("USER_EMAIL").then((email) {
-      /* bool permission = true; */
-      print(email);
       if (email != null && email.isNotEmpty) {
-        /* if (permission) { */
-          BlocProvider.of<NewsBloc>(context)
-            .add(const NewsLoadEvent());
-      /*   } */
+        BlocProvider.of<NewsBloc>(context).add(const NewsLoadEvent());
       } else {
         BlocProvider.of<NewsBloc>(context)
-          .add(const NewsLoadErrorEvent("Please login first"));
+            .add(const NewsLoadErrorEvent("Please login first"));
       }
     });
     return Center(

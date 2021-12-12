@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:timetracking/src/blocs/news/bloc.dart';
 import 'package:timetracking/src/ui/themes/themes.dart';
 import 'package:timetracking/src/models/news.dart';
 

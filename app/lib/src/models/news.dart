@@ -12,8 +12,6 @@ class NewsData {
     _createdAt = data["created_at"];
     _title = data["title"];
     _content = data["content"];
-    print("groups type:");
-    print(data["groups"].runtimeType);
     _groups = data["groups"];
   }
 

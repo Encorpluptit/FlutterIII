@@ -13,16 +13,8 @@ class NewsLoading extends NewsState {
   const NewsLoading();
 }
 
-class NewsLoadedSuccess extends NewsState {
-  const NewsLoadedSuccess();
-}
-
 class NewsLoadedFailure extends NewsState {
   String error = "";
 
   NewsLoadedFailure(this.error);
-}
-
-class NewsOnPage extends NewsState {
-  const NewsOnPage();
 }

@@ -6,12 +6,7 @@ abstract class UserWorkTimeState {
 
 class UserWorkTimeWaitingState extends UserWorkTimeState {}
 
-// class UsersLoadedSuccessState extends UserWorkTimeState {
-//   List<User> users;
-//   int selectedUser = -1;
-//
-//   UsersLoadedSuccessState(this.users, {this.selectedUser = -1});
-// }
+class UserWorkTimeResetState extends UserWorkTimeState {}
 
 class UserWorkTimesLoadedSuccessState extends UserWorkTimeState {
   final List<WorkTime> workTimes;

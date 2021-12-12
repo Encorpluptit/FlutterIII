@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:website/blocs/users/bloc.dart';
+import 'package:website/blocs/work_time/bloc.dart';
 
 import 'card.dart';
 
@@ -84,9 +85,12 @@ class _UsersListPage extends State<UsersListPage> {
                     source: _DataSource(
                         rows: _list,
                         context: context,
-                        setSelected: (index) =>
-                            BlocProvider.of<UsersBloc>(context)
-                                .add(UsersClickOnDetailsEvent(index))),
+                        setSelected: (index) => {
+                              BlocProvider.of<UsersBloc>(context)
+                                  .add(UsersClickOnDetailsEvent(index)),
+                              BlocProvider.of<UserWorkTimeBloc>(context)
+                                  .add(UserWorkTimeResetEvent())
+                            }),
                   )),
               Container(
                   height: MediaQuery.of(context).size.height,

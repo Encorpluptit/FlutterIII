@@ -11,8 +11,14 @@ part 'state.dart';
 
 class UserWorkTimeBloc extends Bloc<UserWorkTimeEvent, UserWorkTimeState> {
   UserWorkTimeBloc() : super(UserWorkTimeWaitingState()) {
+    on<UserWorkTimeResetEvent>(
+        (event, emit) async => emit(_userWorkTimesReset()));
     on<UserClickOnWorkTimesEvent>(
         (event, emit) async => emit(await _userWorkTimes(event.user)));
+  }
+
+  UserWorkTimeState _userWorkTimesReset() {
+    return UserWorkTimeResetState();
   }
 
   Future<UserWorkTimeState> _userWorkTimes(User user) async {

@@ -75,8 +75,8 @@ class _UserCard extends State<UserCard> {
             child: TextButton(
               style: TextButton.styleFrom(primary: Colors.blue),
               onPressed: () => {
-                // BlocProvider.of<UsersBloc>(context)
-                //     .add(UserClickOnWorkTimesEvent(user))
+                BlocProvider.of<UserWorkTimeBloc>(context)
+                    .add(UserClickOnWorkTimesEvent(user))
               },
               child: Text('Check work times',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
@@ -98,9 +98,36 @@ class _UserCard extends State<UserCard> {
                 }
                 return (true);
               }, builder: (context, state) {
-                if (state is UsersWaitingState) {
+                print(state.toString());
+                if (state is UserWorkTimeWaitingState ||
+                    state is UserWorkTimeResetState) {
                   return (Container());
                 }
+                return Row(
+                  children: [
+                    Text("ok1"),
+                    Text("ok2"),
+                  ],
+                );
+                // return               Container(
+                //     width: MediaQuery.of(context).size.width / 2,
+                //     child: PaginatedDataTable(
+                //       showCheckboxColumn: false,
+                //       rowsPerPage: 10,
+                //       columns: [
+                //         DataColumn(label: Text('UUID')),
+                //         DataColumn(label: Text('Email')),
+                //         DataColumn(label: Text('Email verified')),
+                //         DataColumn(label: Text('Account creation date')),
+                //       ],
+                //       source: _DataSource(
+                //           rows: _list,
+                //           context: context,
+                //           setSelected: (index) =>
+                //               BlocProvider.of<UsersBloc>(context)
+                //                   .add(UsersClickOnDetailsEvent(index))),
+                //     )),
+
                 return (Container());
                 // if (state is UsersLoadedSuccessState) {
                 //   List<User> _list = state.users;

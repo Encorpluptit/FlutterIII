@@ -17,10 +17,10 @@ class UsersClickOnDetailsEvent extends UsersEvent {
   const UsersClickOnDetailsEvent(this.selectedUser);
 }
 
-class UserClickOnWorkTimesEvent extends UsersEvent {
-  final User user;
-  const UserClickOnWorkTimesEvent(this.user);
-}
+// class UserClickOnWorkTimesEvent extends UsersEvent {
+//   final User user;
+//   const UserClickOnWorkTimesEvent(this.user);
+// }
 
 class UsersUpdateEvent extends UsersEvent {
   final User user;

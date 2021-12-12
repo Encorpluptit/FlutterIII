@@ -13,11 +13,11 @@ class UsersLoadedSuccessState extends UsersState {
   UsersLoadedSuccessState(this.users, {this.selectedUser = -1});
 }
 
-class UserWorkTimesLoadedSuccessState extends UsersState {
-  final List<WorkTime> workTimes;
-
-  const UserWorkTimesLoadedSuccessState(this.workTimes);
-}
+// class UserWorkTimesLoadedSuccessState extends UsersState {
+//   final List<WorkTime> workTimes;
+//
+//   const UserWorkTimesLoadedSuccessState(this.workTimes);
+// }
 
 class UserLoadErrorState extends UsersState {
   final String cause;

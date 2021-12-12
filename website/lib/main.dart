@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:website/blocs/users/bloc.dart';
+import 'package:website/blocs/work_time/bloc.dart';
 import 'package:website/routes/private_route.dart';
 import 'package:website/screens/layout.dart';
 import 'package:website/screens/login/login.dart';
@@ -19,6 +20,9 @@ void main() {
     }),
     BlocProvider(create: (context) {
       return UsersBloc();
+    }),
+    BlocProvider(create: (context) {
+      return UserWorkTimeBloc();
     }),
   ], child: App()));
 }

@@ -37,39 +37,51 @@ class _UserCard extends State<UserCard> {
     emailController.text = user.email;
 
     return Card(
-        child: Column(
-      children: <Widget>[
-        SizedBox(),
-        TextFormField(
-          keyboardType: TextInputType.text,
-          enabled: false,
-          autofocus: false,
-          decoration: InputDecoration(
-            hintText: 'UID',
-            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+      child: Column(
+        children: <Widget>[
+          SizedBox(),
+          TextFormField(
+            keyboardType: TextInputType.text,
+            enabled: false,
+            autofocus: false,
+            decoration: InputDecoration(
+              hintText: 'UID',
+              contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+            ),
           ),
-        ),
-        TextFormField(
-          keyboardType: TextInputType.emailAddress,
-          controller: emailController,
-          autofocus: false,
-          decoration: InputDecoration(
-            hintText: 'Email',
-            contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          TextFormField(
+            keyboardType: TextInputType.emailAddress,
+            controller: emailController,
+            autofocus: false,
+            decoration: InputDecoration(
+              hintText: 'Email',
+              contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+            ),
           ),
-        ),
-        Container(
-          child: TextButton(
-            style: TextButton.styleFrom(primary: Colors.blue),
-            onPressed: () => {
-              user = update(user, "email", emailController.text),
-              BlocProvider.of<UsersBloc>(context).add(UsersUpdateEvent(user))
-            },
-            child: Text('Update',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Container(
+            child: TextButton(
+              style: TextButton.styleFrom(primary: Colors.blue),
+              onPressed: () => {
+                user = update(user, "email", emailController.text),
+                BlocProvider.of<UsersBloc>(context).add(UsersUpdateEvent(user))
+              },
+              child: Text('Update',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            ),
           ),
-        ),
-      ],
-    ));
+          Container(
+            child: TextButton(
+              style: TextButton.styleFrom(primary: Colors.blue),
+              onPressed: () => {
+                BlocProvider.of<UsersBloc>(context)
+                    .add(UserClickOnWorkTimesEvent(user))
+              },
+              child: Text('Check work times',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

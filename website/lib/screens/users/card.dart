@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:website/blocs/users/bloc.dart';
 import 'package:website/blocs/work_time/bloc.dart';
 import 'package:website/screens/users/users.dart';
+import 'package:website/widgets/work_time/work_time.dart';
 
 class UserCard extends StatefulWidget {
   final List<User> users;
@@ -103,12 +104,38 @@ class _UserCard extends State<UserCard> {
                     state is UserWorkTimeResetState) {
                   return (Container());
                 }
-                return Row(
-                  children: [
-                    Text("ok1"),
-                    Text("ok2"),
-                  ],
-                );
+                if (state is UserWorkTimesLoadedSuccessState) {
+                  if (state.workTimes.isEmpty || state.workTimes.length == 0) {
+                    return const Center(child: Text('No WorkTime Found'));
+                  }
+                  return Container(
+                    width: MediaQuery.of(context).size.width / 2,
+                    height: MediaQuery.of(context).size.height / 1.5,
+                    child: ListView(
+                      padding: const EdgeInsets.all(8),
+                      children: <Widget>[
+                        WorkTime(),
+                        Container(
+                          height: 50,
+                          color: Colors.amber[500],
+                          child: const Center(child: Text('Entry B')),
+                        ),
+                        Container(
+                          height: 50,
+                          color: Colors.amber[100],
+                          child: const Center(child: Text('Entry C')),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return const Center(child: Text('No WorkTime Found'));
+                // return Row(
+                //   children: [
+                //     Text("ok1"),
+                //     Text("ok2"),
+                //   ],
+                // );
                 // return               Container(
                 //     width: MediaQuery.of(context).size.width / 2,
                 //     child: PaginatedDataTable(
@@ -128,7 +155,7 @@ class _UserCard extends State<UserCard> {
                 //                   .add(UsersClickOnDetailsEvent(index))),
                 //     )),
 
-                return (Container());
+                // return (Container());
                 // if (state is UsersLoadedSuccessState) {
                 //   List<User> _list = state.users;
                 //   return Row(children: <Widget>[

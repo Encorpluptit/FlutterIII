@@ -111,23 +111,33 @@ class _UserCard extends State<UserCard> {
                   return Container(
                     width: MediaQuery.of(context).size.width / 2,
                     height: MediaQuery.of(context).size.height / 1.5,
-                    child: ListView(
-                      padding: const EdgeInsets.all(8),
-                      children: <Widget>[
-                        WorkTime(),
-                        Container(
-                          height: 50,
-                          color: Colors.amber[500],
-                          child: const Center(child: Text('Entry B')),
-                        ),
-                        Container(
-                          height: 50,
-                          color: Colors.amber[100],
-                          child: const Center(child: Text('Entry C')),
-                        ),
-                      ],
+                    child: ListView.builder(
+                      itemCount: state.workTimes.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return WorkTime(workTime: state.workTimes[index]);
+                      },
                     ),
                   );
+                  // return Container(
+                  //   width: MediaQuery.of(context).size.width / 2,
+                  //   height: MediaQuery.of(context).size.height / 1.5,
+                  //   child: ListView(
+                  //     padding: const EdgeInsets.all(8),
+                  //     children: <Widget>[
+                  //       WorkTime(),
+                  //       Container(
+                  //         height: 50,
+                  //         color: Colors.amber[500],
+                  //         child: const Center(child: Text('Entry B')),
+                  //       ),
+                  //       Container(
+                  //         height: 50,
+                  //         color: Colors.amber[100],
+                  //         child: const Center(child: Text('Entry C')),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // );
                 }
                 return const Center(child: Text('No WorkTime Found'));
                 // return Row(

@@ -9,7 +9,7 @@ class UserWorkTimeWaitingState extends UserWorkTimeState {}
 class UserWorkTimeResetState extends UserWorkTimeState {}
 
 class UserWorkTimesLoadedSuccessState extends UserWorkTimeState {
-  final List<WorkTime> workTimes;
+  final List<WorkTimeModel> workTimes;
 
   const UserWorkTimesLoadedSuccessState(this.workTimes);
 }

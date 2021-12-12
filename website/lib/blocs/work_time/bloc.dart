@@ -23,7 +23,7 @@ class UserWorkTimeBloc extends Bloc<UserWorkTimeEvent, UserWorkTimeState> {
 
   Future<UserWorkTimeState> _userWorkTimes(User user) async {
     try {
-      List<WorkTime> workTimes = [];
+      List<WorkTimeModel> workTimes = [];
       final resp = await FirebaseFirestore.instanceFor(app: global.app)
           .collection("in_out")
           .orderBy("created_at", descending: true)
@@ -31,7 +31,7 @@ class UserWorkTimeBloc extends Bloc<UserWorkTimeEvent, UserWorkTimeState> {
           .get();
       if (resp.docs.isNotEmpty) {
         for (var element in resp.docs) {
-          workTimes.add(WorkTime(element.data(), element.id));
+          workTimes.add(WorkTimeModel(element.data(), element.id));
         }
       }
       return UserWorkTimesLoadedSuccessState(workTimes);

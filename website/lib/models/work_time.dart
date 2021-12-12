@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class WorkTime {
+class WorkTimeModel {
   String? _id;
   String? _user;
   Timestamp? _createdAt;
@@ -13,7 +13,7 @@ class WorkTime {
   double? _outLongitude;
   bool? _requiresApproval;
 
-  WorkTime(data, docId) {
+  WorkTimeModel(data, docId) {
     _id = docId;
     _user = data["user"];
     _createdAt = data["created_at"];

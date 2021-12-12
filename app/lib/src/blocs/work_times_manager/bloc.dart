@@ -19,6 +19,8 @@ class WorkTimesManagerBloc
         (event, emit) async => emit(await _workTimesManagerRequest(event)));
     on<WorkTimesManagerDeleteEvent>((event, emit) async =>
         emit(await _workTimesManagerDeleteRequest(event)));
+    on<WorkTimesManagerUpdateEvent>((event, emit) async =>
+        emit(await _workTimesManagerUpdateRequest(event)));
     on<WorkTimesManagerReloadEvent>(
         (event, emit) async => emit(const WorkTimesManagerLoading()));
   }
@@ -50,6 +52,23 @@ class WorkTimesManagerBloc
       WorkTimesManagerDeleteEvent event) async {
     try {
       global.store.collection("in_out").doc(event.id).delete();
+      return const WorkTimesManagerLoading();
+    } on FirebaseException catch (error) {
+      return WorkTimesManagerError(error.message!);
+    } on Exception catch (error) {
+      return WorkTimesManagerError(error.toString());
+    }
+  }
+
+  Future<WorkTimesManagerState> _workTimesManagerUpdateRequest(
+      WorkTimesManagerUpdateEvent event) async {
+    try {
+      global.store.collection("in_out").doc(event.id).update({
+        "in": event._in,
+        "out": event.out,
+        "updated_at": DateTime.now(),
+        "requires_approval": true
+      });
       return const WorkTimesManagerLoading();
     } on FirebaseException catch (error) {
       return WorkTimesManagerError(error.message!);

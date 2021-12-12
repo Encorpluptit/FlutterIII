@@ -20,16 +20,19 @@ class _WorkTimesManagerLoggedInPageState
   @override
   Widget build(BuildContext context) {
     if (widget.workTimes.isEmpty) {
-      return (const Scaffold(
-          body: Center(
-        child: Text(
-          "You have never clocked⏱",
-          style: TextStyle(fontSize: 20),
+      return (const Center(
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
+          child: Text(
+            "You have never clocked⏱",
+            style: TextStyle(fontSize: 20),
+          ),
         ),
-      )));
+      ));
     }
     return Scaffold(
       body: SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
         child: Center(
           child: Column(
             children: widget.workTimes.map<Widget>((workTime) {
@@ -38,6 +41,10 @@ class _WorkTimesManagerLoggedInPageState
                 onDeletePressed: () {
                   BlocProvider.of<WorkTimesManagerBloc>(context)
                       .add(WorkTimesManagerDeleteEvent(workTime.id!));
+                },
+                onSave: (_in, out) {
+                  BlocProvider.of<WorkTimesManagerBloc>(context)
+                      .add(WorkTimesManagerUpdateEvent(workTime.id!, _in, out));
                 },
               );
             }).toList(),

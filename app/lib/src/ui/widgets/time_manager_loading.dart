@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timetracking/src/blocs/time_manager/bloc.dart';
 import 'package:timetracking/src/utils/shared_preferences.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:timetracking/src/utils/global.dart' as global;
 
 class TimeManagerLoadingPage extends StatefulWidget {
   const TimeManagerLoadingPage({Key? key}) : super(key: key);

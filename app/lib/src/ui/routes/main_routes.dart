@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timetracking/src/blocs/account/bloc.dart';
+import 'package:timetracking/src/blocs/news/bloc.dart';
 import 'package:timetracking/src/blocs/time_manager/bloc.dart';
 import 'package:timetracking/src/blocs/work_times_manager/bloc.dart';
 import 'package:timetracking/src/ui/screens/account.dart';
+import 'package:timetracking/src/ui/screens/news.dart';
 import 'package:timetracking/src/ui/screens/time_manager.dart';
 import 'package:timetracking/src/ui/screens/work_times_manager.dart';
 
@@ -15,6 +17,13 @@ class NavigationRouteInterface {
 }
 
 List<NavigationRouteInterface> navigationRoutes = [
+  NavigationRouteInterface(
+      const Icon(Icons.person),
+      "News",
+      BlocProvider(
+        create: (_) => NewsBloc(),
+        child: const NewsScreen(),
+      )),
   NavigationRouteInterface(
       const Icon(Icons.person),
       "All work times",

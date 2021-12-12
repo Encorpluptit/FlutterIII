@@ -33,53 +33,52 @@ class _TimeManagerLoggedInPageState extends State<TimeManagerLoggedInPage> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SingleChildScrollView(
+          physics: const AlwaysScrollableScrollPhysics(),
           child: Padding(
-        padding: const EdgeInsets.fromLTRB(24.0, 40.0, 24.0, 0),
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              width: double.infinity,
-              height: height,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(formattedTime),
-                  const SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: () async {
-                      if (widget.action == "Clock In") {
-                        BlocProvider.of<TimeManagerBloc>(context)
-                            .add(TimeManagerClockInEvent(
-                          currentTime,
-                          await Geolocator.getCurrentPosition(
-                            desiredAccuracy: LocationAccuracy.best,
-                          ),
-                        ));
-                      } else {
-                        BlocProvider.of<TimeManagerBloc>(context)
-                            .add(TimeManagerClockOutEvent(
-                          currentTime,
-                          await Geolocator.getCurrentPosition(
-                            desiredAccuracy: LocationAccuracy.best,
-                          ),
-                        ));
-                      }
-                    },
-                    child: ModulableButton(
-                      textValue: widget.action,
-                      width: 75,
-                      height: 75,
-                    ),
-                  )
-                ],
-              ),
+            padding: const EdgeInsets.fromLTRB(24.0, 40.0, 24.0, 0),
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(formattedTime),
+                      const SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () async {
+                          if (widget.action == "Clock In") {
+                            BlocProvider.of<TimeManagerBloc>(context)
+                                .add(TimeManagerClockInEvent(
+                              currentTime,
+                              await Geolocator.getCurrentPosition(
+                                desiredAccuracy: LocationAccuracy.best,
+                              ),
+                            ));
+                          } else {
+                            BlocProvider.of<TimeManagerBloc>(context)
+                                .add(TimeManagerClockOutEvent(
+                              currentTime,
+                              await Geolocator.getCurrentPosition(
+                                desiredAccuracy: LocationAccuracy.best,
+                              ),
+                            ));
+                          }
+                        },
+                        child: ModulableButton(
+                          textValue: widget.action,
+                          width: 75,
+                          height: 75,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      )),
+          )),
     );
   }
 

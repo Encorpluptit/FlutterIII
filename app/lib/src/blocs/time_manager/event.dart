@@ -26,3 +26,11 @@ class TimeManagerClockOutEvent extends TimeManagerEvent {
   final Position position;
   const TimeManagerClockOutEvent(this.time, this.position);
 }
+
+class TimeManagerReloadEvent extends TimeManagerEvent {
+  const TimeManagerReloadEvent();
+}
+
+class TimeManagerLoadEvent extends TimeManagerEvent {
+  const TimeManagerLoadEvent();
+}

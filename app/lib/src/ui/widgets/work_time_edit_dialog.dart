@@ -69,8 +69,17 @@ class _WorkTimeEditDialogState extends State<WorkTimeEditDialog> {
                     lastDate: DateTime.now(),
                     initialDate: widget.workTime.in_!.toDate());
                 if (widget.inDatePicked != null) {
-                  widget.clockInDate =
-                      DateFormat('dd/MM/yyy').format(widget.inDatePicked!);
+                  if (widget.outDatePicked != null) {
+                    if (widget.inDatePicked!.isBefore(widget.outDatePicked!) ||
+                        widget.inDatePicked!
+                            .isAtSameMomentAs(widget.outDatePicked!)) {
+                      widget.clockInDate =
+                          DateFormat('dd/MM/yyy').format(widget.inDatePicked!);
+                    }
+                  } else {
+                    widget.clockInDate =
+                        DateFormat('dd/MM/yyy').format(widget.inDatePicked!);
+                  }
                 }
               },
             ),
@@ -111,8 +120,19 @@ class _WorkTimeEditDialogState extends State<WorkTimeEditDialog> {
                   initialDate: time,
                 );
                 if (widget.outDatePicked != null) {
-                  widget.clockOutDate =
-                      DateFormat('dd/MM/yyy').format(widget.outDatePicked!);
+                  if (widget.inDatePicked != null) {
+                    if (widget.inDatePicked!.isBefore(widget.outDatePicked!) ||
+                        widget.inDatePicked!
+                            .isAtSameMomentAs(widget.outDatePicked!)) {
+                      widget.clockOutDate =
+                          DateFormat('dd/MM/yyy').format(widget.outDatePicked!);
+                    }
+                  } else if (widget.workTime.in_!
+                      .toDate()
+                      .isBefore(widget.outDatePicked!)) {
+                    widget.clockOutDate =
+                        DateFormat('dd/MM/yyy').format(widget.outDatePicked!);
+                  }
                 }
               },
             ),

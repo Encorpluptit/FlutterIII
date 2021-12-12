@@ -2,9 +2,9 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
+import 'package:website/models/work_time.dart';
 import 'package:website/screens/users/users.dart';
 import 'package:website/utils/global.dart' as global;
-import 'package:website/utils/shared_preferences.dart';
 
 part 'event.dart';
 part 'state.dart';
@@ -12,14 +12,14 @@ part 'state.dart';
 class UsersBloc extends Bloc<UsersEvent, UsersState> {
   UsersBloc() : super(UsersWaitingState()) {
     on<UsersWaitingEvent>((event, emit) => emit(UsersWaitingState()));
-    on<UsersLoadEvent>((event, emit) async => emit(await _UsersRequest()));
+    on<UsersLoadEvent>((event, emit) async => emit(await _usersRequest()));
     on<UsersClickOnDetailsEvent>((event, emit) async =>
-        emit(await _UsersRequest(selectedUser: event.selectedUser)));
+        emit(await _usersRequest(selectedUser: event.selectedUser)));
     on<UsersUpdateEvent>(
-        (event, emit) async => emit(await _UsersUpdate(event.user)));
+        (event, emit) async => emit(await _usersUpdate(event.user)));
   }
 
-  Future<UsersState> _UsersRequest({int selectedUser = -1}) async {
+  Future<UsersState> _usersRequest({int selectedUser = -1}) async {
     final users =
         FirebaseFirestore.instanceFor(app: global.app).collection("users");
     final query = await users.get().catchError((error) => print(error));
@@ -32,7 +32,7 @@ class UsersBloc extends Bloc<UsersEvent, UsersState> {
     return (UsersLoadedSuccessState(_list, selectedUser: selectedUser));
   }
 
-  Future<UsersState> _UsersUpdate(User user) async {
+  Future<UsersState> _usersUpdate(User user) async {
     final collection = FirebaseFirestore.instanceFor(app: global.app)
         .collection("users")
         .doc(user.uuid);

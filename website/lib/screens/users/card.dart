@@ -114,7 +114,10 @@ class _UserCard extends State<UserCard> {
                     child: ListView.builder(
                       itemCount: state.workTimes.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return WorkTime(workTime: state.workTimes[index]);
+                        return Row(children: [
+                          WorkTime(workTime: state.workTimes[index]),
+                          Divider(),
+                        ]);
                       },
                     ),
                   );

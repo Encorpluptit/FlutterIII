@@ -14,6 +14,12 @@ class UserWorkTimesLoadedSuccessState extends UserWorkTimeState {
   const UserWorkTimesLoadedSuccessState(this.workTimes);
 }
 
+class UserWorkTimeUpdateSuccessState extends UserWorkTimeState {
+  final WorkTimeModel workTime;
+
+  const UserWorkTimeUpdateSuccessState(this.workTime);
+}
+
 class UserWorkTimeLoadErrorState extends UserWorkTimeState {
   final String cause;
 

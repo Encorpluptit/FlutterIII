@@ -11,138 +11,188 @@ class WorkTime extends StatefulWidget {
 }
 
 class _WorkTime extends State<WorkTime> {
-  var email_controller = TextEditingController();
-  final password_controller = TextEditingController();
+  var inController = TextEditingController();
+  var outController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  TimeOfDay selectedTime = TimeOfDay.now();
+  TimeOfDay inTime = TimeOfDay.now();
+  TimeOfDay outTime = TimeOfDay.now();
 
   @override
   void initState() {
-    email_controller =
-        TextEditingController(text: widget.workTime.in_.toString());
     super.initState();
+    if (widget.workTime.in_ != null) {
+      inTime = TimeOfDay.fromDateTime(widget.workTime.in_!.toDate());
+      var inTmp = TimeOfDay.fromDateTime(widget.workTime.in_!.toDate());
+      inController = TextEditingController(
+        text:
+            '${inTmp.hour}:${inTmp.minute} ${inTmp.period.name.toString().toUpperCase()}',
+      );
+    }
+    if (widget.workTime.out != null) {
+      inTime = TimeOfDay.fromDateTime(widget.workTime.out!.toDate());
+      var outTmp = TimeOfDay.fromDateTime(widget.workTime.out!.toDate());
+      outController = TextEditingController(
+        text:
+            '${outTmp.hour}:${outTmp.minute} ${outTmp.period.name.toString().toUpperCase()}',
+      );
+    }
+    // super.initState();
   }
 
-  _selectTime(BuildContext context) async {
+  _submitWorkTime(BuildContext context) async {}
+
+  _selectTime(BuildContext context, TimeOfDay time,
+      TextEditingController controller) async {
     final TimeOfDay? timeOfDay = await showTimePicker(
       context: context,
-      initialTime: selectedTime,
+      initialTime: time,
       initialEntryMode: TimePickerEntryMode.dial,
     );
-    if (timeOfDay != null && timeOfDay != selectedTime) {
+    if (timeOfDay != null && timeOfDay != time) {
       setState(() {
-        selectedTime = timeOfDay;
+        controller.text = timeOfDay.format(context);
+        time = timeOfDay;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    // inController = TextEditingController(
+    //   text:
+    //       TimeOfDay.fromDateTime(widget.workTime.in_!.toDate()).format(context),
+    // );
+    // outController = TextEditingController(
+    //   text:
+    //       TimeOfDay.fromDateTime(widget.workTime.out!.toDate()).format(context),
+    // );
     return Container(
-      color: Colors.amber[600],
-      child: Card(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // TextFormField(
-                //   key: _formKey,
-                //   autofocus: false,
-                //   controller: password_controller,
-                //   decoration: InputDecoration(
-                //     hintText: 'Entry A',
-                //   ),
-                // ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 4.25,
-                  child: TextFormField(
-                    // key: _formKey,
-                    autofocus: false,
-                    controller: email_controller,
-                    decoration: InputDecoration(
-                      hintText: 'Entry A',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 5,
-                  child: TextFormField(
-                    // key: _formKey,
-                    autofocus: false,
-                    controller: password_controller,
-                    decoration: InputDecoration(
-                      hintText: 'Entry A',
-                    ),
-                  ),
-                ),
-                Divider(),
-                Row(
+      child: Form(
+        key: _formKey,
+        child: Card(
+          margin: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+          child: Row(
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 4.25,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        _selectTime(context);
-                      },
-                      child: Text("In time"),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 9,
+                          child: TextFormField(
+                            controller: inController,
+                            readOnly: true,
+                            decoration: const InputDecoration(
+                              border: UnderlineInputBorder(),
+                              labelText: 'In Time',
+                            ),
+                            onFieldSubmitted: (value) => {
+                              print('In Time submitted ${inController.text}')
+                            },
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            _selectTime(context, inTime, inController);
+                          },
+                          child: Text("In time"),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width / 9,
+                          child: TextFormField(
+                            // initialValue: outTime.toString(),
+                            controller: outController,
+                            readOnly: true,
+                            decoration: const InputDecoration(
+                              border: UnderlineInputBorder(),
+                              labelText: 'Out Time',
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(primary: Colors.red),
+                          onPressed: () {
+                            _selectTime(context, outTime, outController);
+                          },
+                          child: Text("Out time"),
+                        ),
+                      ],
                     ),
                     Divider(),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: Colors.red),
+                      style: ElevatedButton.styleFrom(primary: Colors.green),
                       onPressed: () {
-                        _selectTime(context);
+                        print('ICI');
+                        _formKey.currentState
+                            ?.validate(); // _selectTime(context, outTime);
                       },
-                      child: Text("Out time"),
+                      child: Text("Validate Work Time"),
                     ),
                   ],
                 ),
-              ],
-            )
-          ],
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width / 4.25,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      // initialValue: widget.workTime.inLatitude.toString(),
+                      initialValue: widget.workTime.inLatitude != null
+                          ? widget.workTime.inLatitude.toString()
+                          : '',
+                      readOnly: true,
+                      decoration: const InputDecoration(
+                        border: UnderlineInputBorder(),
+                        labelText: 'In latitude',
+                      ),
+                    ),
+                    TextFormField(
+                      // initialValue: widget.workTime.inLongitude.toString(),
+                      initialValue: widget.workTime.inLongitude != null
+                          ? widget.workTime.inLongitude.toString()
+                          : '',
+                      readOnly: true,
+                      decoration: const InputDecoration(
+                        border: UnderlineInputBorder(),
+                        labelText: 'In longitude',
+                      ),
+                    ),
+                    TextFormField(
+                      initialValue: widget.workTime.outLatitude != null
+                          ? widget.workTime.outLatitude.toString()
+                          : '',
+                      readOnly: true,
+                      decoration: const InputDecoration(
+                        border: UnderlineInputBorder(),
+                        labelText: 'Out latitude',
+                      ),
+                    ),
+                    TextFormField(
+                      initialValue: widget.workTime.outLongitude != null
+                          ? widget.workTime.outLongitude.toString()
+                          : '',
+                      readOnly: true,
+                      decoration: const InputDecoration(
+                        border: UnderlineInputBorder(),
+                        labelText: 'Out longitude',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-      // child: Card(
-      //   child: Column(
-      //     children: [
-      //       Row(
-      //         children: [
-      //           TextFormField(
-      //             autofocus: false,
-      //             controller: password_controller,
-      //             decoration: InputDecoration(
-      //               hintText: 'Entry A',
-      //               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-      //             ),
-      //           ),
-      //           TextFormField(
-      //             autofocus: false,
-      //             // controller: password_controller,
-      //             decoration: InputDecoration(
-      //               hintText: 'Entry A',
-      //               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-      //             ),
-      //           ),
-      //         ],
-      //       ),
-      //     ],
-      //   ),
-      // ),
     );
   }
-
-// @override
-// Widget build(BuildContext context) {
-//   return Container(
-//     height: 50,
-//     color: Colors.amber[600],
-//     child: const Center(child: Text('Entry A')),
-//   );
-// }
 }

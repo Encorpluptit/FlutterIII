@@ -34,7 +34,7 @@ class _WorkTime extends State<WorkTime> {
       var inTmp = TimeOfDay.fromDateTime(widget.workTime.in_!.toDate());
       inController = TextEditingController(
           text:
-              '${inDate.year}-${inDate.month}-${inDate.day} ${inTmp.hour}:${inTmp.minute} ${inTmp.period.name.toString().toUpperCase()}');
+              '${inDate.year}-${inDate.month}-${inDate.day} ${inTmp.hour}:${inTmp.minute}');
     }
     if (widget.workTime.out != null) {
       outDate = widget.workTime.out!.toDate();
@@ -42,7 +42,7 @@ class _WorkTime extends State<WorkTime> {
       var outTmp = TimeOfDay.fromDateTime(widget.workTime.out!.toDate());
       outController = TextEditingController(
           text:
-              '${outDate.year}-${outDate.month}-${outDate.day} ${outTmp.hour}:${outTmp.minute} ${outTmp.period.name.toString().toUpperCase()}');
+              '${outDate.year}-${outDate.month}-${outDate.day} ${outTmp.hour}:${outTmp.minute}');
     }
   }
 

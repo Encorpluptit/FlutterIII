@@ -12,3 +12,9 @@ class UsersLoadedSuccessState extends UsersState {
 
   UsersLoadedSuccessState(this.users, {this.selectedUser = -1});
 }
+
+class UserLoadErrorState extends UsersState {
+  final String cause;
+
+  const UserLoadErrorState(this.cause);
+}

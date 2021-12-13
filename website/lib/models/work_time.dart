@@ -39,4 +39,8 @@ class WorkTimeModel {
   double? get outLatitude => _outLatitude;
   double? get outLongitude => _outLongitude;
   bool? get requiresApproval => _requiresApproval;
+
+  set in_(value) => _in = value;
+  set out(value) => _out = value;
+  set requiresApproval(value) => _requiresApproval = value;
 }

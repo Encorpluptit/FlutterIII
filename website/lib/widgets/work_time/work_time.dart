@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:website/blocs/work_time/bloc.dart';
 import 'package:website/models/work_time.dart';
 
 class WorkTime extends StatefulWidget {
@@ -16,6 +19,8 @@ class _WorkTime extends State<WorkTime> {
   final _formKey = GlobalKey<FormState>();
   TimeOfDay inTime = TimeOfDay.now();
   TimeOfDay outTime = TimeOfDay.now();
+  var inChanged = false;
+  var outChanged = false;
 
   @override
   void initState() {
@@ -29,43 +34,68 @@ class _WorkTime extends State<WorkTime> {
       );
     }
     if (widget.workTime.out != null) {
-      inTime = TimeOfDay.fromDateTime(widget.workTime.out!.toDate());
+      outTime = TimeOfDay.fromDateTime(widget.workTime.out!.toDate());
       var outTmp = TimeOfDay.fromDateTime(widget.workTime.out!.toDate());
       outController = TextEditingController(
         text:
             '${outTmp.hour}:${outTmp.minute} ${outTmp.period.name.toString().toUpperCase()}',
       );
     }
-    // super.initState();
   }
 
-  _submitWorkTime(BuildContext context) async {}
+  _submitWorkTime(BuildContext context) async {
+    var newWorkTime = widget.workTime;
+    if (widget.workTime.in_ != null && inChanged) {
+      var modelDate = widget.workTime.in_!.toDate();
+      modelDate = DateTime(modelDate.year, modelDate.month, modelDate.day,
+          inTime.hour, inTime.minute);
+      var inDate = Timestamp.fromDate(modelDate);
+      newWorkTime.in_ = inDate;
+    }
+    if (widget.workTime.out != null && outChanged) {
+      var modelDate = widget.workTime.out!.toDate();
+      modelDate = DateTime(modelDate.year, modelDate.month, modelDate.day,
+          outTime.hour, outTime.minute);
+      var outDate = Timestamp.fromDate(modelDate);
+      newWorkTime.out = outDate;
+    }
+    newWorkTime.requiresApproval = false;
+    BlocProvider.of<UserWorkTimeBloc>(context)
+        .add(UserWorkTimeUpdateEvent(newWorkTime));
+  }
 
-  _selectTime(BuildContext context, TimeOfDay time,
-      TextEditingController controller) async {
+  _selectInTime(BuildContext context) async {
     final TimeOfDay? timeOfDay = await showTimePicker(
       context: context,
-      initialTime: time,
+      initialTime: inTime,
       initialEntryMode: TimePickerEntryMode.dial,
     );
-    if (timeOfDay != null && timeOfDay != time) {
+    if (timeOfDay != null && timeOfDay != inTime) {
       setState(() {
-        controller.text = timeOfDay.format(context);
-        time = timeOfDay;
+        inController.text = timeOfDay.format(context);
+        inTime = timeOfDay;
+        inChanged = true;
+      });
+    }
+  }
+
+  _selectOutTime(BuildContext context) async {
+    final TimeOfDay? timeOfDay = await showTimePicker(
+      context: context,
+      initialTime: outTime,
+      initialEntryMode: TimePickerEntryMode.dial,
+    );
+    if (timeOfDay != null && timeOfDay != outTime) {
+      setState(() {
+        outController.text = timeOfDay.format(context);
+        inTime = timeOfDay;
+        outChanged = true;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // inController = TextEditingController(
-    //   text:
-    //       TimeOfDay.fromDateTime(widget.workTime.in_!.toDate()).format(context),
-    // );
-    // outController = TextEditingController(
-    //   text:
-    //       TimeOfDay.fromDateTime(widget.workTime.out!.toDate()).format(context),
-    // );
     return Container(
       child: Form(
         key: _formKey,
@@ -90,16 +120,13 @@ class _WorkTime extends State<WorkTime> {
                               border: UnderlineInputBorder(),
                               labelText: 'In Time',
                             ),
-                            onFieldSubmitted: (value) => {
-                              print('In Time submitted ${inController.text}')
-                            },
                           ),
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            _selectTime(context, inTime, inController);
+                            _selectInTime(context);
                           },
-                          child: Text("In time"),
+                          child: Text("Change"),
                         ),
                       ],
                     ),
@@ -109,7 +136,6 @@ class _WorkTime extends State<WorkTime> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width / 9,
                           child: TextFormField(
-                            // initialValue: outTime.toString(),
                             controller: outController,
                             readOnly: true,
                             decoration: const InputDecoration(
@@ -121,9 +147,9 @@ class _WorkTime extends State<WorkTime> {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(primary: Colors.red),
                           onPressed: () {
-                            _selectTime(context, outTime, outController);
+                            _selectOutTime(context);
                           },
-                          child: Text("Out time"),
+                          child: Text("Change"),
                         ),
                       ],
                     ),
@@ -131,9 +157,7 @@ class _WorkTime extends State<WorkTime> {
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(primary: Colors.green),
                       onPressed: () {
-                        print('ICI');
-                        _formKey.currentState
-                            ?.validate(); // _selectTime(context, outTime);
+                        _submitWorkTime(context);
                       },
                       child: Text("Validate Work Time"),
                     ),
@@ -145,7 +169,6 @@ class _WorkTime extends State<WorkTime> {
                 child: Column(
                   children: [
                     TextFormField(
-                      // initialValue: widget.workTime.inLatitude.toString(),
                       initialValue: widget.workTime.inLatitude != null
                           ? widget.workTime.inLatitude.toString()
                           : '',
@@ -156,7 +179,6 @@ class _WorkTime extends State<WorkTime> {
                       ),
                     ),
                     TextFormField(
-                      // initialValue: widget.workTime.inLongitude.toString(),
                       initialValue: widget.workTime.inLongitude != null
                           ? widget.workTime.inLongitude.toString()
                           : '',

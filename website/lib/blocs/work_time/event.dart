@@ -13,6 +13,6 @@ class UserClickOnWorkTimesEvent extends UserWorkTimeEvent {
 }
 
 class UserWorkTimeUpdateEvent extends UserWorkTimeEvent {
-  final WorkTime workTime;
+  final WorkTimeModel workTime;
   const UserWorkTimeUpdateEvent(this.workTime);
 }

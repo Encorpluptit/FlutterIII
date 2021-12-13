@@ -5,7 +5,6 @@ import 'package:meta/meta.dart';
 import 'package:website/models/work_time.dart';
 import 'package:website/screens/users/users.dart';
 import 'package:website/utils/global.dart' as global;
-import 'package:website/widgets/work_time/work_time.dart';
 
 part 'event.dart';
 part 'state.dart';
@@ -45,21 +44,17 @@ class UserWorkTimeBloc extends Bloc<UserWorkTimeEvent, UserWorkTimeState> {
     }
   }
 
-  Future<UserWorkTimeState> _workTimeUpdate(WorkTime workTime) async {
+  Future<UserWorkTimeState> _workTimeUpdate(WorkTimeModel workTime) async {
     try {
-      // List<WorkTimeModel> workTimes = [];
-      // final resp = await FirebaseFirestore.instanceFor(app: global.app)
-      //     .collection("in_out")
-      //     .orderBy("created_at", descending: true)
-      //     .where("user", isEqualTo: "/users/${user.uuid}")
-      //     .get();
-      // if (resp.docs.isNotEmpty) {
-      //   for (var element in resp.docs) {
-      //     workTimes.add(WorkTimeModel(element.data(), element.id));
-      //   }
-      // }
-      // return UserWorkTimeUpdateSuccessState(WorkTimeModel());
-      return UserWorkTimeWaitingState();
+      await FirebaseFirestore.instanceFor(app: global.app)
+          .collection('in_out')
+          .doc(workTime.id)
+          .update({
+        "in": workTime.in_,
+        "out": workTime.out,
+        "requires_approval": workTime.requiresApproval,
+      });
+      return UserWorkTimeUpdateSuccessState(workTime);
     } on FirebaseException catch (error) {
       return UserWorkTimeLoadErrorState(error.message!);
     } on Exception catch (error) {

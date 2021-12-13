@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:website/blocs/users/bloc.dart';
 import 'package:website/blocs/work_time/bloc.dart';
+import 'package:website/models/work_time.dart';
 import 'package:website/screens/users/users.dart';
 import 'package:website/widgets/work_time/work_time.dart';
 
@@ -27,6 +28,7 @@ User update(User user, String field, dynamic value) {
 
 class _UserCard extends State<UserCard> {
   final emailController = TextEditingController();
+  List<WorkTimeModel> workTimes = [];
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +85,6 @@ class _UserCard extends State<UserCard> {
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             ),
           ),
-
           Container(
             child: BlocListener<UserWorkTimeBloc, UserWorkTimeState>(
               listener: (context, state) {
@@ -104,115 +105,34 @@ class _UserCard extends State<UserCard> {
                     state is UserWorkTimeResetState) {
                   return (Container());
                 }
-                if (state is UserWorkTimesLoadedSuccessState) {
-                  if (state.workTimes.isEmpty || state.workTimes.length == 0) {
-                    return const Center(child: Text('No WorkTime Found'));
+                if (state is UserWorkTimesLoadedSuccessState) {}
+                if (state is UserWorkTimesLoadedSuccessState ||
+                    state is UserWorkTimeUpdateSuccessState) {
+                  if (state is UserWorkTimesLoadedSuccessState) {
+                    if (state.workTimes.isEmpty ||
+                        state.workTimes.length == 0) {
+                      return const Center(child: Text('No WorkTime Found'));
+                    }
+                    workTimes = state.workTimes;
                   }
                   return Container(
                     width: MediaQuery.of(context).size.width / 2,
                     height: MediaQuery.of(context).size.height / 1.5,
                     child: ListView.builder(
-                      itemCount: state.workTimes.length,
+                      itemCount: workTimes.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Row(children: [
-                          WorkTime(workTime: state.workTimes[index]),
+                          WorkTime(workTime: workTimes[index]),
                           Divider(),
                         ]);
                       },
                     ),
                   );
-                  // return Container(
-                  //   width: MediaQuery.of(context).size.width / 2,
-                  //   height: MediaQuery.of(context).size.height / 1.5,
-                  //   child: ListView(
-                  //     padding: const EdgeInsets.all(8),
-                  //     children: <Widget>[
-                  //       WorkTime(),
-                  //       Container(
-                  //         height: 50,
-                  //         color: Colors.amber[500],
-                  //         child: const Center(child: Text('Entry B')),
-                  //       ),
-                  //       Container(
-                  //         height: 50,
-                  //         color: Colors.amber[100],
-                  //         child: const Center(child: Text('Entry C')),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // );
                 }
                 return const Center(child: Text('No WorkTime Found'));
-                // return Row(
-                //   children: [
-                //     Text("ok1"),
-                //     Text("ok2"),
-                //   ],
-                // );
-                // return               Container(
-                //     width: MediaQuery.of(context).size.width / 2,
-                //     child: PaginatedDataTable(
-                //       showCheckboxColumn: false,
-                //       rowsPerPage: 10,
-                //       columns: [
-                //         DataColumn(label: Text('UUID')),
-                //         DataColumn(label: Text('Email')),
-                //         DataColumn(label: Text('Email verified')),
-                //         DataColumn(label: Text('Account creation date')),
-                //       ],
-                //       source: _DataSource(
-                //           rows: _list,
-                //           context: context,
-                //           setSelected: (index) =>
-                //               BlocProvider.of<UsersBloc>(context)
-                //                   .add(UsersClickOnDetailsEvent(index))),
-                //     )),
-
-                // return (Container());
-                // if (state is UsersLoadedSuccessState) {
-                //   List<User> _list = state.users;
-                //   return Row(children: <Widget>[
-                //     Container(
-                //         width: MediaQuery.of(context).size.width / 2,
-                //         child: PaginatedDataTable(
-                //           showCheckboxColumn: false,
-                //           rowsPerPage: 10,
-                //           columns: [
-                //             DataColumn(label: Text('UUID')),
-                //             DataColumn(label: Text('Email')),
-                //             DataColumn(label: Text('Email verified')),
-                //             DataColumn(label: Text('Account creation date')),
-                //           ],
-                //           source: _DataSource(
-                //               rows: _list,
-                //               context: context,
-                //               setSelected: (index) =>
-                //                   BlocProvider.of<UsersBloc>(context)
-                //                       .add(UsersClickOnDetailsEvent(index))),
-                //         )),
-                //     Container(
-                //         height: MediaQuery.of(context).size.height,
-                //         width: MediaQuery.of(context).size.width / 2,
-                //         child: UserCard(
-                //             users: _list, selectedUser: state.selectedUser)),
-                //   ]);
-                // }
-                // return (Container());
               }),
             ),
           ),
-
-          // Container(
-          //   child: TextButton(
-          //     style: TextButton.styleFrom(primary: Colors.blue),
-          //     onPressed: () => {
-          //       BlocProvider.of<UsersBloc>(context)
-          //           .add(UserClickOnWorkTimesEvent(user))
-          //     },
-          //     child: Text('Check work times',
-          //         style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          //   ),
-          // ),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:website/blocs/work_time/bloc.dart';
@@ -19,6 +20,8 @@ class _WorkTime extends State<WorkTime> {
   final _formKey = GlobalKey<FormState>();
   TimeOfDay inTime = TimeOfDay.now();
   TimeOfDay outTime = TimeOfDay.now();
+  DateTime inDate = DateTime.now();
+  DateTime outDate = DateTime.now();
   var inChanged = false;
   var outChanged = false;
 
@@ -26,38 +29,35 @@ class _WorkTime extends State<WorkTime> {
   void initState() {
     super.initState();
     if (widget.workTime.in_ != null) {
+      inDate = widget.workTime.in_!.toDate();
       inTime = TimeOfDay.fromDateTime(widget.workTime.in_!.toDate());
       var inTmp = TimeOfDay.fromDateTime(widget.workTime.in_!.toDate());
       inController = TextEditingController(
-        text:
-            '${inTmp.hour}:${inTmp.minute} ${inTmp.period.name.toString().toUpperCase()}',
-      );
+          text:
+              '${inDate.year}-${inDate.month}-${inDate.day} ${inTmp.hour}:${inTmp.minute} ${inTmp.period.name.toString().toUpperCase()}');
     }
     if (widget.workTime.out != null) {
+      outDate = widget.workTime.out!.toDate();
       outTime = TimeOfDay.fromDateTime(widget.workTime.out!.toDate());
       var outTmp = TimeOfDay.fromDateTime(widget.workTime.out!.toDate());
       outController = TextEditingController(
-        text:
-            '${outTmp.hour}:${outTmp.minute} ${outTmp.period.name.toString().toUpperCase()}',
-      );
+          text:
+              '${outDate.year}-${outDate.month}-${outDate.day} ${outTmp.hour}:${outTmp.minute} ${outTmp.period.name.toString().toUpperCase()}');
     }
   }
 
   _submitWorkTime(BuildContext context) async {
     var newWorkTime = widget.workTime;
     if (widget.workTime.in_ != null && inChanged) {
-      var modelDate = widget.workTime.in_!.toDate();
-      modelDate = DateTime(modelDate.year, modelDate.month, modelDate.day,
-          inTime.hour, inTime.minute);
-      var inDate = Timestamp.fromDate(modelDate);
-      newWorkTime.in_ = inDate;
+      var modelDate = DateTime(
+          inDate.year, inDate.month, inDate.day, inTime.hour, inTime.minute);
+      newWorkTime.in_ = Timestamp.fromDate(modelDate);
     }
     if (widget.workTime.out != null && outChanged) {
-      var modelDate = widget.workTime.out!.toDate();
-      modelDate = DateTime(modelDate.year, modelDate.month, modelDate.day,
+      var modelDate = DateTime(outDate.year, outDate.month, outDate.day,
           outTime.hour, outTime.minute);
-      var outDate = Timestamp.fromDate(modelDate);
-      newWorkTime.out = outDate;
+      print(modelDate.toString());
+      newWorkTime.out = Timestamp.fromDate(modelDate);
     }
     newWorkTime.requiresApproval = false;
     BlocProvider.of<UserWorkTimeBloc>(context)
@@ -65,14 +65,25 @@ class _WorkTime extends State<WorkTime> {
   }
 
   _selectInTime(BuildContext context) async {
+    final DateTime? date = await showDatePicker(
+      context: context,
+      initialDate: inDate,
+      firstDate: DateTime(1970),
+      lastDate: DateTime.now(),
+      initialEntryMode: DatePickerEntryMode.calendar,
+    );
     final TimeOfDay? timeOfDay = await showTimePicker(
       context: context,
       initialTime: inTime,
       initialEntryMode: TimePickerEntryMode.dial,
     );
-    if (timeOfDay != null && timeOfDay != inTime) {
+    if (timeOfDay != null &&
+        date != null &&
+        (date != inDate || timeOfDay != inTime)) {
       setState(() {
-        inController.text = timeOfDay.format(context);
+        inController.text =
+            '${date.year}-${date.month}-${date.day} ${timeOfDay.format(context)}';
+        inDate = date;
         inTime = timeOfDay;
         inChanged = true;
       });
@@ -80,15 +91,26 @@ class _WorkTime extends State<WorkTime> {
   }
 
   _selectOutTime(BuildContext context) async {
+    final DateTime? date = await showDatePicker(
+      context: context,
+      initialDate: outDate,
+      firstDate: DateTime(1970),
+      lastDate: DateTime.now(),
+      initialEntryMode: DatePickerEntryMode.calendar,
+    );
     final TimeOfDay? timeOfDay = await showTimePicker(
       context: context,
       initialTime: outTime,
       initialEntryMode: TimePickerEntryMode.dial,
     );
-    if (timeOfDay != null && timeOfDay != outTime) {
+    if (timeOfDay != null &&
+        date != null &&
+        (date != outDate || timeOfDay != outTime)) {
       setState(() {
-        outController.text = timeOfDay.format(context);
-        inTime = timeOfDay;
+        outController.text =
+            '${date.year}-${date.month}-${date.day} ${timeOfDay.format(context)}';
+        outDate = date;
+        outTime = timeOfDay;
         outChanged = true;
       });
     }
